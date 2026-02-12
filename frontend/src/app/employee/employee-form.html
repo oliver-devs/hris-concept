@@ -1,0 +1,100 @@
+<div class="form-container">
+    <mat-card class="form-card">
+        <mat-card-header>
+            <mat-icon mat-card-avatar color="primary">
+                {{ isEditMode() ? 'edit' : 'person_add' }}
+            </mat-icon>
+            <mat-card-title>
+                {{ isEditMode() ? 'Mitarbeiter bearbeiten' : 'Neuer Mitarbeiter' }}
+            </mat-card-title>
+            <mat-card-subtitle>Bitte Daten eingeben</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form (ngSubmit)="save()" class="employee-form">
+                <div class="form-row">
+                    <mat-form-field appearance="outline" class="half-width">
+                        <mat-label>Vorname</mat-label>
+                        <input
+                            matInput
+                            [(ngModel)]="employee.first_name"
+                            name="first_name"
+                            required
+                        />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="half-width">
+                        <mat-label>Nachname</mat-label>
+                        <input
+                            matInput
+                            [(ngModel)]="employee.last_name"
+                            name="last_name"
+                            required
+                        />
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Email Adresse</mat-label>
+                    <input
+                        matInput
+                        [(ngModel)]="employee.email"
+                        name="email"
+                        type="email"
+                        required
+                        #emailInput="ngModel"
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                    />
+                    <mat-icon matSuffix>email</mat-icon>
+
+                    @if (emailInput.invalid && (emailInput.dirty || emailInput.touched)) {
+                        <mat-error>
+                            @if (emailInput.errors?.['required']) {
+                                Email ist Pflichtfeld!
+                            }
+                            @if (emailInput.errors?.['pattern']) {
+                                Bitte eine echte E-Mail eingeben (z.B. max@firma.de)
+                            }
+                        </mat-error>
+                    }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Abteilung</mat-label>
+                    <mat-select [(ngModel)]="employee.department" name="department" required>
+                        @for (dept of departments(); track dept.id) {
+                            <mat-option [value]="dept.name">{{ dept.name }}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-icon matSuffix>domain</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Position & Rolle</mat-label>
+                    <mat-select
+                        [(ngModel)]="employee.position"
+                        name="position"
+                        required
+                        #posInput="ngModel"
+                    >
+                        @for (pos of positions(); track pos.id) {
+                            <mat-option [value]="pos.title">{{ pos.title }}</mat-option>
+                        }
+                    </mat-select>
+                    <mat-icon matSuffix>badge</mat-icon>
+
+                    @if (posInput.invalid && (posInput.dirty || posInput.touched)) {
+                        <mat-error>Bitte eine Position auswählen!</mat-error>
+                    }
+                </mat-form-field>
+
+                <div class="actions">
+                    <button mat-button type="button" routerLink="/list">Abbrechen</button>
+                    <button mat-flat-button color="primary" type="submit">
+                        <mat-icon>save</mat-icon> Speichern
+                    </button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

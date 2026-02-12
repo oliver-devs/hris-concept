@@ -1,0 +1,67 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# --- Angular / Frontend (Compiled output) ---
+dist/
+tmp/
+out-tsc/
+bazel-out/
+
+# --- Node ---
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# --- Python / Backend ---
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Python Cache & Bytecode (WICHTIG!)
+__pycache__/
+*.pyc
+
+# Environment Variablen (Secrets nie hochladen!)
+.env
+
+# WICHTIG: requirements.txt wird gebraucht -> NICHT ignorieren!
+# requirements.txt
+
+# --- IDEs and editors ---
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# --- Visual Studio Code ---
+# Ignoriere .vscode Ordner überall (auch im Frontend)
+.vscode/
+
+# ABER: Erlaube diese spezifischen Dateien im Hauptordner (für Team-Settings)
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+
+# Local History Plugin
+.history/
+
+# --- Miscellaneous ---
+.angular/
+.sass-cache/
+connect.lock/
+coverage/
+libpeerconnection.log/
+testem.log
+typings/
+__screenshots__/
+
+# --- System files ---
+.DS_Store
+Thumbs.db
+
+*.sqlite3

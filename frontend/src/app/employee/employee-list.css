@@ -1,0 +1,29 @@
+.container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+table {
+    width: 100%;
+}
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+.dept-badge {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+.pos-badge {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+    border: 1px solid #e1bee7;
+}

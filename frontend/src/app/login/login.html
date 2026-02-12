@@ -1,0 +1,40 @@
+<div class="login-container">
+    <mat-card class="login-card">
+        <mat-card-header class="card-header">
+            <mat-card-title>HR Login</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form (ngSubmit)="onLogin()" class="login-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Benutzername</mat-label>
+                    <input matInput [(ngModel)]="username" name="username" required />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Passwort</mat-label>
+                    <input
+                        matInput
+                        [(ngModel)]="password"
+                        name="password"
+                        type="password"
+                        required
+                    />
+                </mat-form-field>
+
+                <button
+                    mat-flat-button
+                    color="primary"
+                    type="submit"
+                    [disabled]="!username || !password || isLoading()"
+                >
+                    @if (isLoading()) {
+                        Wird geladen...
+                    } @else {
+                        Einloggen
+                    }
+                </button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

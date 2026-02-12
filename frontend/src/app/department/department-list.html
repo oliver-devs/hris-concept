@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="header">
+        <h2>Abteilungs-Verwaltung</h2>
+        <button mat-flat-button color="primary" (click)="openForm()">
+            <mat-icon>add</mat-icon> Neue Abteilung
+        </button>
+    </div>
+
+    <div class="grid">
+        @for (dept of departments(); track dept.id) {
+            <mat-card class="dept-card">
+                <mat-card-header>
+                    <div mat-card-avatar class="avatar-icon">
+                        <mat-icon>domain</mat-icon>
+                    </div>
+                    <mat-card-title>{{ dept.name }}</mat-card-title>
+                    <mat-card-subtitle> {{ dept.employee_count }} Mitarbeiter </mat-card-subtitle>
+                </mat-card-header>
+
+                <mat-card-content class="content">
+                    <p>{{ dept.description || 'Keine Beschreibung verfügbar.' }}</p>
+                </mat-card-content>
+
+                <mat-card-actions align="end">
+                    <button mat-button color="primary" (click)="openForm(dept)">Bearbeiten</button>
+
+                    <button mat-button color="warn" (click)="deleteDept(dept)">Löschen</button>
+                </mat-card-actions>
+            </mat-card>
+        }
+    </div>
+</div>

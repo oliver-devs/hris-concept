@@ -1,0 +1,8 @@
+/* Damit das Formular nicht gequetscht aussieht */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+    min-width: 300px;
+}

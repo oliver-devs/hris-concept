@@ -1,0 +1,74 @@
+html,
+body {
+    margin: 0;
+    height: 100%;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    background-color: #fafafa;
+}
+
+.sidenav-container {
+    height: 100vh;
+}
+
+.sidenav {
+    width: 260px;
+    background: white;
+    border-right: 1px solid #e0e0e0;
+    /* WICHTIG: Flexbox, damit wir den Logout nach unten schieben können */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidenav-header {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+    position: relative;
+}
+
+/* Die Liste soll den verfügbaren Platz einnehmen */
+.nav-list {
+    flex: 1;
+    display: flex !important;
+    flex-direction: column;
+}
+
+/* Der Spacer drückt alles Folgende (Logout) nach unten */
+.menu-spacer {
+    flex: 1;
+}
+
+.menu-subheader {
+    color: #757575;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding-left: 16px;
+    height: 40px;
+    line-height: 40px;
+}
+
+.active-link {
+    background-color: #e3f2fd !important;
+    color: #1565c0 !important;
+    font-weight: 500;
+    border-right: 4px solid #1565c0;
+}
+
+.active-link mat-icon {
+    color: #1565c0 !important;
+}
+
+mat-divider {
+    margin: 8px 0 !important;
+}
+
+.main-content {
+    background-color: #f5f5f5; /* Leichter grauer Hintergrund für den Content */
+    height: 100vh;
+}
+
+.login-wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}

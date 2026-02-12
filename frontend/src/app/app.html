@@ -1,0 +1,70 @@
+@if (auth.isLoggedIn()) {
+    <mat-sidenav-container class="sidenav-container">
+        <mat-sidenav mode="side" opened class="sidenav">
+            <mat-toolbar color="primary" class="sidenav-header">
+                <mat-icon style="margin-right: 10px">admin_panel_settings</mat-icon>
+                <span>HR System</span>
+            </mat-toolbar>
+
+            <mat-nav-list class="nav-list">
+                <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>dashboard</mat-icon>
+                    <span matListItemTitle>Dashboard</span>
+                </a>
+
+                <a mat-list-item routerLink="/list" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>groups</mat-icon>
+                    <span matListItemTitle>Mitarbeiter</span>
+                </a>
+
+                <a mat-list-item routerLink="/departments" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>domain</mat-icon>
+                    <span matListItemTitle>Abteilungen</span>
+                </a>
+
+                <mat-divider></mat-divider>
+                <div mat-subheader class="menu-subheader">ORGANISATION</div>
+
+                <a mat-list-item routerLink="/create" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>person_add</mat-icon>
+                    <span matListItemTitle>Neuer Mitarbeiter</span>
+                </a>
+
+                <a mat-list-item routerLink="/calendar" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>event_note</mat-icon>
+                    <span matListItemTitle>Urlaubsplaner</span>
+                </a>
+
+                <a mat-list-item routerLink="/analytics" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>bar_chart</mat-icon>
+                    <span matListItemTitle>Statistiken</span>
+                </a>
+
+                <mat-divider></mat-divider>
+                <div mat-subheader class="menu-subheader">SYSTEM</div>
+
+                <a mat-list-item routerLink="/settings" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>settings</mat-icon>
+                    <span matListItemTitle>Einstellungen</span>
+                </a>
+
+                <div class="menu-spacer"></div>
+
+                <mat-divider></mat-divider>
+
+                <a mat-list-item (click)="logout()" style="cursor: pointer; color: #d32f2f">
+                    <mat-icon matListItemIcon style="color: #d32f2f">logout</mat-icon>
+                    <span matListItemTitle>Abmelden</span>
+                </a>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content class="main-content">
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+} @else {
+    <div class="login-wrapper">
+        <router-outlet></router-outlet>
+    </div>
+}
