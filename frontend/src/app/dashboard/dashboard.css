@@ -1,25 +1,33 @@
 .dashboard-container {
     padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1000px;
+    margin: 40px auto;
 }
+
 .welcome-header {
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
+
 h1 {
     margin: 0;
-    font-size: 24px;
+    font-size: 2.5rem;
+    font-weight: 400;
     color: #333;
+
+    .highlight-name {
+        color: #1976d2;
+        font-weight: 600;
+    }
 }
-/* Hervorhebung für den Namen */
-.highlight-name {
-    color: #1976d2;
-    font-weight: 600;
-}
+
 p {
+    font-size: 1.125rem;
+    font-weight: 200;
     color: grey;
-    margin: 5px 0 0 0;
+    margin: 15px 0 0 0;
 }
+
+/* --- KPI KARTEN --- */
 .kpi-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -63,11 +71,19 @@ p {
 .purple-card {
     background: linear-gradient(135deg, #9c27b0, #7b1fa2);
 }
+
+/* --- CONTENT GRID (Charts & Listen) --- */
 .content-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
+
+/* --- ABSTAND FÜR DAS DIAGRAMM --- */
+.bar-chart {
+    margin-top: 24px; /* Viel Abstand für das Diagramm */
+}
+
 .chart-row {
     display: flex;
     align-items: center;
@@ -77,6 +93,9 @@ p {
     width: 100px;
     font-size: 13px;
     color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .chart-bar-container {
     flex: 1;
@@ -90,6 +109,7 @@ p {
     height: 100%;
     background: #2196f3;
     border-radius: 5px;
+    transition: width 0.5s ease-out;
 }
 .chart-value {
     width: 30px;
@@ -97,6 +117,12 @@ p {
     font-weight: bold;
     color: #333;
 }
+
+/* --- RECENT EMPLOYEES LISTE --- */
+.recent-list {
+    margin-top: 0; /* KORREKTUR: Kein extra Abstand, das Card-Padding reicht */
+}
+
 .recent-item {
     display: flex;
     align-items: center;

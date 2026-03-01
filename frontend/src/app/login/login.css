@@ -1,25 +1,75 @@
 .login-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f5f5f5;
+    background: linear-gradient(135deg, #e3f2fd 0%, #f5f7fa 50%, #e8eaf6 100%);
+}
+
+.login-branding {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.login-logo {
+    font-size: 56px;
+    height: 56px;
+    width: 56px;
+    color: #1565c0;
+}
+
+.login-app-name {
+    margin: 12px 0 4px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1a1a1a;
+    letter-spacing: 0.5px;
+}
+
+.login-tagline {
+    margin: 0;
+    font-size: 14px;
+    color: #7a7a7a;
+    letter-spacing: 0.3px;
 }
 
 .login-card {
-    padding: 20px;
-    width: 350px;
-    /* Optional: Ein leichter Schatten für mehr Tiefe */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 380px;
+    padding: 32px 24px 24px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
-.card-header {
-    justify-content: center;
-    margin-bottom: 20px;
+.login-title {
+    margin: 0 0 24px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
 }
 
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 4px;
+}
+
+.login-form mat-icon[matPrefix] {
+    color: #9e9e9e;
+    margin-right: 8px;
+}
+
+.login-button {
+    margin-top: 8px;
+    height: 48px;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+    border-radius: 8px;
+}
+
+.login-footer {
+    margin-top: 32px;
+    font-size: 12px;
+    color: #b0b0b0;
 }

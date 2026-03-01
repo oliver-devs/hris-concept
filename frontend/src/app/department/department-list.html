@@ -1,14 +1,16 @@
 <div class="container">
     <div class="header">
-        <h2>Abteilungs-Verwaltung</h2>
-        <button mat-flat-button color="primary" (click)="openForm()">
+        <h1>Abteilungen</h1>
+        <p>Verwalte hier die Abteilungen deines Unternehmens.</p>
+
+        <button mat-flat-button color="primary" class="add-btn" (click)="openForm()">
             <mat-icon>add</mat-icon> Neue Abteilung
         </button>
     </div>
 
     <div class="grid">
         @for (dept of departments(); track dept.id) {
-            <mat-card class="dept-card">
+            <mat-card class="dept-card appearance-outlined">
                 <mat-card-header>
                     <div mat-card-avatar class="avatar-icon">
                         <mat-icon>domain</mat-icon>
@@ -18,15 +20,39 @@
                 </mat-card-header>
 
                 <mat-card-content class="content">
-                    <p>{{ dept.description || 'Keine Beschreibung verfügbar.' }}</p>
+                    <p class="description">
+                        {{ dept.description || 'Keine Beschreibung hinterlegt.' }}
+                    </p>
                 </mat-card-content>
 
-                <mat-card-actions align="end">
+                <mat-card-actions align="end" class="actions">
                     <button mat-button color="primary" (click)="openForm(dept)">Bearbeiten</button>
 
-                    <button mat-button color="warn" (click)="deleteDept(dept)">Löschen</button>
+                    <div
+                        [matTooltip]="
+                            (dept.employee_count || 0) > 0
+                                ? 'Nicht leer! Erst Mitarbeiter verschieben.'
+                                : 'Löschen'
+                        "
+                    >
+                        <button
+                            mat-button
+                            color="warn"
+                            (click)="deleteDept(dept)"
+                            [disabled]="(dept.employee_count || 0) > 0"
+                        >
+                            Löschen
+                        </button>
+                    </div>
                 </mat-card-actions>
             </mat-card>
         }
     </div>
+
+    @if (departments().length === 0) {
+        <div class="empty-state">
+            <mat-icon>domain_disabled</mat-icon>
+            <p>Keine Abteilungen gefunden.</p>
+        </div>
+    }
 </div>

@@ -1,0 +1,150 @@
+.settings-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+.header {
+    margin-bottom: 50px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: #333;
+}
+
+p {
+    font-size: 1.125rem;
+    font-weight: 200;
+    color: grey;
+    margin: 15px 0 0 0;
+}
+
+/* Tabs Styling */
+.settings-tabs {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tab-icon {
+    margin-right: 8px;
+}
+
+.tab-content {
+    padding: 24px;
+    background-color: #f5f7fa; /* Gleicher Hintergrund wie Main Content */
+}
+
+/* Karten innerhalb der Tabs */
+.settings-card {
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    border-radius: 12px;
+}
+
+mat-card-header {
+    margin-bottom: 0px;
+}
+
+.placeholder-text {
+    color: #757575;
+    font-style: italic;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* --- STAMMDATEN: Positionen --- */
+
+/* Styling für die Material Liste */
+.position-list {
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    background: #fafafa;
+    padding-top: 0;
+}
+
+.position-list mat-list-item {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.position-list mat-list-item:last-child {
+    border-bottom: none; /* Der letzte Strich kommt weg */
+}
+
+/* NEU: Zwingt die Buttons im Container nebeneinander */
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Schiebt den Titel nach links und den Button nach rechts */
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    /* WICHTIG: Keine width: 100% oder margins an den Seiten, das macht der mat-card-content! */
+}
+
+/* Damit Titel und Untertitel schön untereinander bleiben */
+.title-group {
+    display: flex;
+    flex-direction: column;
+    margin-inline: 20px !important;
+    margin-top: 15px;
+}
+
+/* Entfernt heimliche Angular-Material-Ränder für perfekten Links-Bündig-Look */
+.title-group mat-card-title {
+    margin-inline: 0px !important;
+}
+
+.title-group mat-card-subtitle {
+    margin-inline: 0px !important;
+    font-weight: 200;
+}
+
+.addBtn {
+    margin-top: 20px;
+    margin-right: 20px;
+}
+
+/* --- PROFIL: Passwort-Formular --- */
+.password-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px; /* Damit das Formular nicht unendlich breit wird */
+}
+
+.save-pw-btn {
+    align-self: flex-start; /* Button linksbündig unter den Feldern */
+    margin-top: 10px;
+}
+
+/* --- UNTERNEHMEN: Formular --- */
+.company-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.company-form .full-width {
+    width: 100%;
+    max-width: 500px;
+}
+
+.company-form .form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.company-form .save-btn {
+    align-self: flex-start;
+    margin-top: 10px;
+}

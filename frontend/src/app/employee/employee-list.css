@@ -1,29 +1,106 @@
 .container {
     padding: 20px;
-    max-width: 1000px;
-    margin: 0 auto;
+    max-width: 1000px; /* Etwas breiter für die Tabelle */
+    margin: 40px auto;
 }
+
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+    position: relative; /* WICHTIG: Damit der Button weiß, wo rechts oben ist */
+    margin-bottom: 50px;
 }
+
+/* 2. Exakt identisch zu Settings & Dashboard */
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: #333;
+}
+
+p {
+    font-size: 1.125rem;
+    font-weight: 200;
+    color: grey;
+    margin: 15px 0 0 0; /* Die 10px für den knackigeren Abstand */
+}
+
+/* 3. Der Button wird absolut rechts oben festgenagelt */
+.add-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: 4px; /* Ein minimaler Schubs nach unten, damit er optisch zur h1 passt */
+}
+
+.search-field {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.table-container {
+    border-radius: 8px; /* Runde Ecken für die Tabelle */
+    overflow: hidden; /* Damit Header Ecken nicht überstehen */
+}
+
 table {
     width: 100%;
 }
+
+/* --- Badges (Labels) --- */
 .badge {
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 4px 10px;
+    border-radius: 16px; /* Pillen-Form */
     font-size: 12px;
     font-weight: 500;
+    white-space: nowrap;
 }
+
 .dept-badge {
     background-color: #e3f2fd;
     color: #1565c0;
+    border: 1px solid #bbdefb;
 }
+
 .pos-badge {
     background-color: #f3e5f5;
     color: #7b1fa2;
     border: 1px solid #e1bee7;
+}
+
+.empty-dash {
+    color: #bdbdbd;
+    font-style: italic;
+}
+
+/* --- Status Icons --- */
+.status-icon.approved {
+    color: #4caf50;
+}
+.status-icon.pending {
+    color: #ff9800;
+}
+
+/* --- Zeilen Styling --- */
+.name-cell {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.actions-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Hervorhebung für nicht freigegebene Zeilen */
+.row-pending {
+    background-color: #fff8e1 !important; /* Ganz leichtes Gelb */
+}
+.row-pending:hover {
+    background-color: #ffecb3 !important; /* Dunkleres Gelb beim Hover */
+}
+
+.approve-btn {
+    color: #2e7d32; /* Dunkelgrün */
+    margin-right: 8px;
+    border-color: #a5d6a7;
 }

@@ -1,11 +1,10 @@
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = "django-insecure-change-me-please"  # In Produktion ändern!
+SECRET_KEY = "django-insecure-change-me-please"
 DEBUG = True
 ALLOWED_HOSTS = []
 
-# 1. WICHTIG: Apps definieren
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -13,16 +12,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Unsere Erweiterungen:
-    "rest_framework",  # Für die API
-    "rest_framework.authtoken",  # Für den Login (Token)
-    "corsheaders",  # Damit Angular zugreifen darf
-    "api",  # Deine App
+    "rest_framework",
+    "rest_framework.authtoken",
+    "corsheaders",
+    "api",
 ]
 
-# 2. WICHTIG: Middleware (Reihenfolge ist wichtig!)
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # <--- MUSS GANZ OBEN SEIN
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -52,7 +49,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# Datenbank (Standard SQLite)
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -61,34 +57,24 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-LANGUAGE_CODE = "de-de"  # Deutsch
+LANGUAGE_CODE = "de-de"
 TIME_ZONE = "Europe/Berlin"
 USE_I18N = True
 USE_TZ = True
 STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# 3. WICHTIG: Erlauben, dass Angular (Port 4200) zugreifen darf
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://127.0.0.1:4200",
 ]
 
-# 4. WICHTIG: Sicherheitseinstellungen (Token Pflicht)
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",

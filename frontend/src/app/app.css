@@ -1,70 +1,159 @@
+/* --- GLOBALE EINSTELLUNGEN --- */
 html,
 body {
     margin: 0;
     height: 100%;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
-    background-color: #fafafa;
+    background-color: #f5f7fa;
 }
 
 .sidenav-container {
     height: 100vh;
 }
 
+/* --- DIE SEITENLEISTE --- */
 .sidenav {
-    width: 260px;
+    width: 280px;
     background: white;
-    border-right: 1px solid #e0e0e0;
-    /* WICHTIG: Flexbox, damit wir den Logout nach unten schieben können */
+    border-right: none;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.06);
     display: flex;
     flex-direction: column;
+
+    /* Verhindert den horizontalen Balken unten am Container selbst */
+    overflow-x: hidden;
 }
 
+/* 🔥🔥🔥 DER SCROLLBAR FIX 🔥🔥🔥 
+   Wir nutzen ::ng-deep, damit Angular uns erlaubt, 
+   in den inneren Container von mat-sidenav einzugreifen.
+*/
+
+/* 1. Grundeinstellung: Scrollbar da, aber unsichtbar */
+::ng-deep .mat-drawer-inner-container {
+    overflow-x: hidden !important; /* Horizontal aus */
+
+    /* Firefox: Transparent */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.3s ease;
+}
+
+/* Webkit (Chrome, Edge): Platz reservieren (6px), aber durchsichtig */
+::ng-deep .mat-drawer-inner-container::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+}
+
+::ng-deep .mat-drawer-inner-container::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 4px;
+}
+
+/* 2. HOVER EFEKT: Wenn Maus auf .sidenav ist -> Sichtbar machen */
+
+/* Firefox: Grau werden */
+.sidenav:hover ::ng-deep .mat-drawer-inner-container {
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+/* Chrome/Edge: Daumen grau färben */
+.sidenav:hover ::ng-deep .mat-drawer-inner-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Wenn man direkt draufklickt: Dunkler */
+.sidenav:hover ::ng-deep .mat-drawer-inner-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* --- HEADER --- */
 .sidenav-header {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 2;
-    position: relative;
+    height: 64px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 24px;
+    background: white;
+    color: #333;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-/* Die Liste soll den verfügbaren Platz einnehmen */
+/* --- NAV LISTE --- */
 .nav-list {
     flex: 1;
     display: flex !important;
     flex-direction: column;
+    padding-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Der Spacer drückt alles Folgende (Logout) nach unten */
-.menu-spacer {
-    flex: 1;
+/* --- BUTTONS --- */
+.nav-list a[mat-list-item] {
+    margin: 4px 12px;
+    border-radius: 8px;
+    height: 48px;
+    color: #5f6368;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    width: auto;
 }
 
-.menu-subheader {
-    color: #757575;
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    padding-left: 16px;
-    height: 40px;
-    line-height: 40px;
+.nav-list a[mat-list-item]:hover {
+    background-color: #f5f5f5;
+    color: #202124;
 }
 
+/* Active State */
 .active-link {
     background-color: #e3f2fd !important;
     color: #1565c0 !important;
     font-weight: 500;
-    border-right: 4px solid #1565c0;
 }
 
 .active-link mat-icon {
     color: #1565c0 !important;
 }
 
-mat-divider {
-    margin: 8px 0 !important;
+/* --- TEXTE --- */
+.menu-subheader {
+    color: #9aa0a6;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 24px 0 8px 28px;
 }
 
+mat-divider {
+    margin: 8px 24px !important;
+    border-top-color: #f0f0f0;
+}
+
+.menu-spacer {
+    flex: 1;
+}
+
+/* --- LOGOUT --- */
+.logout-item {
+    margin-bottom: 20px !important;
+    color: #d32f2f !important;
+}
+.logout-item:hover {
+    background-color: #ffebee !important;
+}
+.logout-item mat-icon {
+    color: #d32f2f !important;
+}
+
+/* --- MAIN CONTENT --- */
 .main-content {
-    background-color: #f5f5f5; /* Leichter grauer Hintergrund für den Content */
-    height: 100vh;
+    background-color: #f5f7fa;
+    padding: 0;
 }
 
 .login-wrapper {

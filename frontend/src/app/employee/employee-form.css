@@ -1,33 +1,77 @@
+/* 1. Container: Zentriert die Karte und gibt ihr Platz nach oben */
 .form-container {
-    padding: 20px;
-    max-width: 600px;
-    margin: 40px auto;
+    display: flex;
+    justify-content: center; /* Horizontal mittig */
+    align-items: flex-start; /* Oben starten (besser als center bei langen Formularen) */
+    padding-top: 60px; /* Abstand von oben (Header) */
+    padding-bottom: 60px;
+    min-height: 100vh; /* Damit der Container den ganzen Screen füllt */
+    box-sizing: border-box;
 }
 
+/* 2. Die Karte selbst: Schatten und Rundungen */
 .form-card {
-    /* Optional: Etwas Padding für die Karte selbst */
-    padding: 0px;
+    width: 100%;
+    max-width: 700px; /* Nicht breiter als 700px */
+    padding: 0; /* Reset, Padding kommt innen */
+    border-radius: 16px; /* Moderne, runde Ecken */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important; /* Sanfter Schatten */
+    overflow: hidden; /* Damit der Header die Ecken nicht überschreibt */
 }
 
+/* 3. Der Header der Karte */
+.form-header {
+    background-color: #f5f5f5; /* Leicht grauer Hintergrund für den Header */
+    padding: 20px 24px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* 4. Der Inhalt der Karte */
+.form-content {
+    padding: 30px 40px; /* Viel Luft innen */
+}
+
+/* Das Formular Layout */
 .employee-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 20px; /* Abstand zwischen den Zeilen */
 }
 
+/* Eine Zeile für zwei Felder (Vorname/Nachname) */
 .form-row {
     display: flex;
-    gap: 15px;
+    gap: 20px;
 }
 
-.half-width {
-    flex: 1;
+/* Helfer für volle Breite */
+.full-width {
+    width: 100%;
 }
 
+/* Actions unten rechts */
 .actions {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     justify-content: flex-end;
-    margin-top: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0; /* Trennlinie oben drüber */
+}
+
+/* --- RESPONSIVE DESIGN (Handy) --- */
+@media (max-width: 600px) {
+    .form-container {
+        padding: 10px; /* Weniger Rand auf dem Handy */
+        padding-top: 20px;
+    }
+
+    .form-content {
+        padding: 20px; /* Weniger Padding innen */
+    }
+
+    .form-row {
+        flex-direction: column; /* Felder untereinander statt nebeneinander */
+        gap: 0;
+    }
 }

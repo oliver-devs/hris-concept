@@ -1,10 +1,10 @@
 @if (auth.isLoggedIn()) {
     <mat-sidenav-container class="sidenav-container">
         <mat-sidenav mode="side" opened class="sidenav">
-            <mat-toolbar color="primary" class="sidenav-header">
-                <mat-icon style="margin-right: 10px">admin_panel_settings</mat-icon>
-                <span>HR System</span>
-            </mat-toolbar>
+            <div class="sidenav-header">
+                <mat-icon style="margin-right: 12px; color: #1565c0">admin_panel_settings</mat-icon>
+                <span>HRSys</span>
+            </div>
 
             <mat-nav-list class="nav-list">
                 <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
@@ -12,22 +12,21 @@
                     <span matListItemTitle>Dashboard</span>
                 </a>
 
+                <a mat-list-item routerLink="/analytics" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>bar_chart</mat-icon>
+                    <span matListItemTitle>Statistiken</span>
+                </a>
+
+                <div class="menu-subheader">Personal</div>
+
                 <a mat-list-item routerLink="/list" routerLinkActive="active-link">
                     <mat-icon matListItemIcon>groups</mat-icon>
                     <span matListItemTitle>Mitarbeiter</span>
                 </a>
 
-                <a mat-list-item routerLink="/departments" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>domain</mat-icon>
-                    <span matListItemTitle>Abteilungen</span>
-                </a>
-
-                <mat-divider></mat-divider>
-                <div mat-subheader class="menu-subheader">ORGANISATION</div>
-
-                <a mat-list-item routerLink="/create" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>person_add</mat-icon>
-                    <span matListItemTitle>Neuer Mitarbeiter</span>
+                <a mat-list-item routerLink="/org-chart" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>account_tree</mat-icon>
+                    <span matListItemTitle>Organigramm</span>
                 </a>
 
                 <a mat-list-item routerLink="/calendar" routerLinkActive="active-link">
@@ -35,13 +34,29 @@
                     <span matListItemTitle>Urlaubsplaner</span>
                 </a>
 
-                <a mat-list-item routerLink="/analytics" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>bar_chart</mat-icon>
-                    <span matListItemTitle>Statistiken</span>
+                <a mat-list-item routerLink="/time-tracking" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>schedule</mat-icon>
+                    <span matListItemTitle>Zeiterfassung</span>
                 </a>
 
-                <mat-divider></mat-divider>
-                <div mat-subheader class="menu-subheader">SYSTEM</div>
+                <a mat-list-item routerLink="/documents" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>folder_shared</mat-icon>
+                    <span matListItemTitle>Dokumente</span>
+                </a>
+
+                <div class="menu-subheader">Recruiting</div>
+
+                <a mat-list-item routerLink="/applicants" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>person_search</mat-icon>
+                    <span matListItemTitle>Bewerber</span>
+                </a>
+
+                <div class="menu-subheader">Verwaltung</div>
+
+                <a mat-list-item routerLink="/departments" routerLinkActive="active-link">
+                    <mat-icon matListItemIcon>domain</mat-icon>
+                    <span matListItemTitle>Abteilungen</span>
+                </a>
 
                 <a mat-list-item routerLink="/settings" routerLinkActive="active-link">
                     <mat-icon matListItemIcon>settings</mat-icon>
@@ -49,11 +64,10 @@
                 </a>
 
                 <div class="menu-spacer"></div>
-
                 <mat-divider></mat-divider>
 
-                <a mat-list-item (click)="logout()" style="cursor: pointer; color: #d32f2f">
-                    <mat-icon matListItemIcon style="color: #d32f2f">logout</mat-icon>
+                <a mat-list-item (click)="logout()" class="logout-item" style="cursor: pointer">
+                    <mat-icon matListItemIcon>logout</mat-icon>
                     <span matListItemTitle>Abmelden</span>
                 </a>
             </mat-nav-list>

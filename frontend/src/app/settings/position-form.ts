@@ -5,10 +5,11 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { EmployeeService, Department } from '../employee/employee';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { EmployeeService, Position } from '../employee/employee';
 
 @Component({
-    selector: 'app-department-form',
+    selector: 'app-position-form',
     standalone: true,
     imports: [
         CommonModule,
@@ -18,32 +19,37 @@ import { EmployeeService, Department } from '../employee/employee';
         MatInputModule,
         MatButtonModule,
     ],
-    templateUrl: './department-form.html',
-    styleUrl: './department-form.css',
+    templateUrl: './position-form.html',
+    styleUrl: './position-form.css',
 })
-export class DepartmentFormComponent {
+export class PositionFormComponent {
     private service = inject(EmployeeService);
-    private ref = inject(MatDialogRef<DepartmentFormComponent>);
-    private data = inject<Department>(MAT_DIALOG_DATA, { optional: true });
+    private ref = inject(MatDialogRef<PositionFormComponent>);
+    private snackBar = inject(MatSnackBar);
+    private data = inject<Position>(MAT_DIALOG_DATA, { optional: true });
 
     isEditMode = signal(false);
-    dept: Department = { name: '', description: '' };
+    pos: Partial<Position> = { title: '' };
 
     constructor() {
         if (this.data) {
-            this.dept = { ...this.data };
+            this.pos = { ...this.data };
             this.isEditMode.set(true);
         }
     }
 
     save() {
         if (this.isEditMode()) {
-            this.service.updateDepartment(this.dept.id!, this.dept).subscribe(() => {
+            this.service.updatePosition(this.pos.id!, this.pos).subscribe(() => {
                 this.ref.close(true);
             });
         } else {
-            this.service.createDepartment(this.dept).subscribe(() => {
-                this.ref.close(true);
+            this.service.createPosition(this.pos.title!).subscribe({
+                next: () => this.ref.close(true),
+                error: (err) => {
+                    console.error(err);
+                    this.snackBar.open('Fehler beim Erstellen der Position.', 'OK', { duration: 4000 });
+                },
             });
         }
     }

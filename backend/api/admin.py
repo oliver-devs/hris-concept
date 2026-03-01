@@ -1,7 +1,22 @@
 from django.contrib import admin
 from .models import Employee, Department, Position
 
-# Register your models here.
-admin.site.register(Employee)
-admin.site.register(Department)
-admin.site.register(Position)  # <--- NEU
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = ("first_name", "last_name", "email", "department", "position", "is_approved")
+    list_filter = ("is_approved", "department", "position")
+    search_fields = ("first_name", "last_name", "email")
+
+
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ("name", "description")
+    search_fields = ("name",)
+
+
+@admin.register(Position)
+class PositionAdmin(admin.ModelAdmin):
+    list_display = ("title", "description", "group")
+    list_filter = ("group",)
+    search_fields = ("title",)

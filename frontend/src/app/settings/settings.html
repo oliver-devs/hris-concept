@@ -1,0 +1,210 @@
+<div class="settings-container">
+    <div class="header">
+        <h1>Einstellungen</h1>
+        <p>Verwalte hier das System und dein Profil.</p>
+    </div>
+
+    <mat-tab-group animationDuration="0ms" class="settings-tabs">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="tab-icon">domain</mat-icon>
+                Unternehmen
+            </ng-template>
+
+            <div class="tab-content">
+                <mat-card class="settings-card">
+                    <div class="card-header-flex">
+                        <div class="title-group">
+                            <mat-card-title>Allgemeine Daten</mat-card-title>
+                            <mat-card-subtitle
+                                >Globale Einstellungen für das HR-System</mat-card-subtitle
+                            >
+                        </div>
+                    </div>
+                    <mat-card-content>
+                        <div class="company-form">
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Unternehmensname</mat-label>
+                                <input
+                                    matInput
+                                    [(ngModel)]="companyData.name"
+                                    placeholder="z.B. Muster GmbH"
+                                />
+                                <mat-icon matPrefix style="margin-right: 8px; color: grey"
+                                    >business</mat-icon
+                                >
+                            </mat-form-field>
+
+                            <div class="form-row">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Standard-Urlaubstage</mat-label>
+                                    <input
+                                        matInput
+                                        type="number"
+                                        [(ngModel)]="companyData.vacationDays"
+                                    />
+                                    <mat-icon matPrefix style="margin-right: 8px; color: grey"
+                                        >flight_takeoff</mat-icon
+                                    >
+                                    <span matTextSuffix>Tage</span>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Wöchentliche Arbeitszeit</mat-label>
+                                    <input
+                                        matInput
+                                        type="number"
+                                        [(ngModel)]="companyData.workingHours"
+                                    />
+                                    <mat-icon matPrefix style="margin-right: 8px; color: grey"
+                                        >schedule</mat-icon
+                                    >
+                                    <span matTextSuffix>Stunden</span>
+                                </mat-form-field>
+                            </div>
+
+                            <button
+                                mat-flat-button
+                                color="primary"
+                                class="save-btn"
+                                (click)="saveCompanyData()"
+                            >
+                                <mat-icon>save</mat-icon> Unternehmensdaten speichern
+                            </button>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="tab-icon">list_alt</mat-icon>
+                Stammdaten
+            </ng-template>
+
+            <div class="tab-content">
+                <mat-card class="settings-card">
+                    <div class="card-header-flex">
+                        <div class="title-group">
+                            <mat-card-title>Positionen & Rollen</mat-card-title>
+                            <mat-card-subtitle
+                                >Verwalte die Auswahllisten für Mitarbeiter</mat-card-subtitle
+                            >
+                        </div>
+
+                        <button
+                            mat-flat-button
+                            color="primary"
+                            class="addBtn"
+                            (click)="openPositionForm()"
+                        >
+                            <mat-icon>add</mat-icon> Neue Position
+                        </button>
+                    </div>
+
+                    <mat-card-content>
+                        <mat-list class="position-list">
+                            @for (pos of positions(); track pos.id) {
+                                <mat-list-item>
+                                    <mat-icon matListItemIcon style="color: grey"
+                                        >work_outline</mat-icon
+                                    >
+
+                                    <span matListItemTitle>{{ pos.title }}</span>
+
+                                    <div matListItemMeta class="action-buttons">
+                                        <button
+                                            mat-icon-button
+                                            color="primary"
+                                            (click)="openPositionForm(pos)"
+                                        >
+                                            <mat-icon>edit</mat-icon>
+                                        </button>
+
+                                        <button
+                                            mat-icon-button
+                                            color="warn"
+                                            (click)="removePosition(pos)"
+                                        >
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </div>
+                                </mat-list-item>
+                            }
+
+                            @if (positions().length === 0) {
+                                <p class="placeholder-text" style="padding: 16px">
+                                    Keine Positionen gefunden.
+                                </p>
+                            }
+                        </mat-list>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </mat-tab>
+
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <mat-icon class="tab-icon">person</mat-icon>
+                Mein Profil
+            </ng-template>
+
+            <div class="tab-content">
+                <mat-card class="settings-card">
+                    <div class="card-header-flex">
+                        <div class="title-group">
+                            <mat-card-title>Sicherheit</mat-card-title>
+                            <mat-card-subtitle>Passwort und Zugangsdaten ändern</mat-card-subtitle>
+                        </div>
+                    </div>
+
+                    <mat-card-content>
+                        <div class="password-form">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Aktuelles Passwort</mat-label>
+                                <input
+                                    matInput
+                                    type="password"
+                                    [(ngModel)]="passwordData.old_password"
+                                />
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Neues Passwort</mat-label>
+                                <input
+                                    matInput
+                                    type="password"
+                                    [(ngModel)]="passwordData.new_password"
+                                />
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Neues Passwort bestätigen</mat-label>
+                                <input
+                                    matInput
+                                    type="password"
+                                    [(ngModel)]="passwordData.confirm_password"
+                                />
+                            </mat-form-field>
+
+                            <button
+                                mat-flat-button
+                                color="primary"
+                                class="save-pw-btn"
+                                [disabled]="
+                                    !passwordData.old_password ||
+                                    !passwordData.new_password ||
+                                    !passwordData.confirm_password
+                                "
+                                (click)="changePassword()"
+                            >
+                                <mat-icon>save</mat-icon> Passwort speichern
+                            </button>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>
