@@ -1,8 +1,8 @@
-<div class="settings-container">
-    <div class="header">
+<section class="settings-container">
+    <header class="header">
         <h1>Einstellungen</h1>
         <p>Verwalte hier das System und dein Profil.</p>
-    </div>
+    </header>
 
     <mat-tab-group animationDuration="0ms" class="settings-tabs">
         <mat-tab>
@@ -16,9 +16,9 @@
                     <div class="card-header-flex">
                         <div class="title-group">
                             <mat-card-title>Allgemeine Daten</mat-card-title>
-                            <mat-card-subtitle
-                                >Globale Einstellungen für das HR-System</mat-card-subtitle
-                            >
+                            <mat-card-subtitle>
+                                Globale Einstellungen für das HR-System
+                            </mat-card-subtitle>
                         </div>
                     </div>
                     <mat-card-content>
@@ -30,9 +30,7 @@
                                     [(ngModel)]="companyData.name"
                                     placeholder="z.B. Muster GmbH"
                                 />
-                                <mat-icon matPrefix style="margin-right: 8px; color: grey"
-                                    >business</mat-icon
-                                >
+                                <mat-icon matPrefix class="field-icon">business</mat-icon>
                             </mat-form-field>
 
                             <div class="form-row">
@@ -43,9 +41,7 @@
                                         type="number"
                                         [(ngModel)]="companyData.vacationDays"
                                     />
-                                    <mat-icon matPrefix style="margin-right: 8px; color: grey"
-                                        >flight_takeoff</mat-icon
-                                    >
+                                    <mat-icon matPrefix class="field-icon">flight_takeoff</mat-icon>
                                     <span matTextSuffix>Tage</span>
                                 </mat-form-field>
 
@@ -56,9 +52,7 @@
                                         type="number"
                                         [(ngModel)]="companyData.workingHours"
                                     />
-                                    <mat-icon matPrefix style="margin-right: 8px; color: grey"
-                                        >schedule</mat-icon
-                                    >
+                                    <mat-icon matPrefix class="field-icon">schedule</mat-icon>
                                     <span matTextSuffix>Stunden</span>
                                 </mat-form-field>
                             </div>
@@ -88,9 +82,9 @@
                     <div class="card-header-flex">
                         <div class="title-group">
                             <mat-card-title>Positionen & Rollen</mat-card-title>
-                            <mat-card-subtitle
-                                >Verwalte die Auswahllisten für Mitarbeiter</mat-card-subtitle
-                            >
+                            <mat-card-subtitle>
+                                Verwalte die Auswahllisten für Mitarbeiter
+                            </mat-card-subtitle>
                         </div>
 
                         <button
@@ -107,9 +101,9 @@
                         <mat-list class="position-list">
                             @for (pos of positions(); track pos.id) {
                                 <mat-list-item>
-                                    <mat-icon matListItemIcon style="color: grey"
-                                        >work_outline</mat-icon
-                                    >
+                                    <mat-icon matListItemIcon class="position-icon">
+                                        work_outline
+                                    </mat-icon>
 
                                     <span matListItemTitle>{{ pos.title }}</span>
 
@@ -131,10 +125,8 @@
                                         </button>
                                     </div>
                                 </mat-list-item>
-                            }
-
-                            @if (positions().length === 0) {
-                                <p class="placeholder-text" style="padding: 16px">
+                            } @empty {
+                                <p class="placeholder-text padded">
                                     Keine Positionen gefunden.
                                 </p>
                             }
@@ -207,4 +199,4 @@
             </div>
         </mat-tab>
     </mat-tab-group>
-</div>
+</section>

@@ -1,11 +1,10 @@
-<div class="dashboard-container">
-    <div class="welcome-header">
+<section class="dashboard-container">
+    <header class="welcome-header">
         <h1>
-            Willkommen, <span class="highlight-name">{{ formattedName() }}</span
-            >!
+            Willkommen, <span class="highlight-name">{{ formattedName() }}</span>!
         </h1>
         <p>Hier ist der aktuelle Status der Personalabteilung.</p>
-    </div>
+    </header>
 
     <div class="kpi-grid">
         <mat-card class="kpi-card blue-card">
@@ -61,11 +60,8 @@
                             </div>
                             <div class="chart-value">{{ dept.employee_count || 0 }}</div>
                         </div>
-                    }
-                    @if (departments().length === 0) {
-                        <p style="color: grey; text-align: center; margin-top: 20px">
-                            Keine Abteilungen gefunden.
-                        </p>
+                    } @empty {
+                        <p class="empty-message">Keine Abteilungen gefunden.</p>
                     }
                 </div>
             </mat-card-content>
@@ -74,7 +70,7 @@
         <mat-card class="recent-card">
             <mat-card-header>
                 <mat-card-title>Neueste Zugänge</mat-card-title>
-                <button mat-button color="primary" routerLink="/list" style="margin-left: auto">
+                <button mat-button color="primary" routerLink="/list" class="show-all-btn">
                     Alle anzeigen
                 </button>
             </mat-card-header>
@@ -92,17 +88,14 @@
                                 <div class="recent-role">{{ emp.department }}</div>
                             </div>
                             <button mat-icon-button routerLink="/edit/{{ emp.id }}">
-                                <mat-icon style="font-size: 18px; color: grey">edit</mat-icon>
+                                <mat-icon class="edit-icon">edit</mat-icon>
                             </button>
                         </div>
-                    }
-                    @if (recentEmployees().length === 0) {
-                        <p style="padding: 20px; text-align: center; color: grey">
-                            Noch keine Mitarbeiter.
-                        </p>
+                    } @empty {
+                        <p class="empty-message padded">Noch keine Mitarbeiter.</p>
                     }
                 </div>
             </mat-card-content>
         </mat-card>
     </div>
-</div>
+</section>

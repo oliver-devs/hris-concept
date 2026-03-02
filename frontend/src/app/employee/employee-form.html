@@ -1,18 +1,18 @@
-<div class="form-container">
+<section class="form-container">
     <mat-card class="form-card">
-        <div class="form-header">
+        <header class="form-header">
             <mat-card-header>
-                <mat-icon mat-card-avatar color="primary" style="transform: scale(1.2)">
+                <mat-icon mat-card-avatar color="primary" class="header-icon">
                     {{ isEditMode() ? 'edit' : 'person_add' }}
                 </mat-icon>
-                <mat-card-title style="font-size: 1.4rem">
+                <mat-card-title class="header-title">
                     {{ isEditMode() ? 'Mitarbeiter bearbeiten' : 'Neuer Mitarbeiter' }}
                 </mat-card-title>
                 <mat-card-subtitle>
                     {{ isEditMode() ? 'Daten aktualisieren' : 'Bitte füllen Sie das Formular aus' }}
                 </mat-card-subtitle>
             </mat-card-header>
-        </div>
+        </header>
 
         <mat-card-content class="form-content">
             <form (ngSubmit)="save()" class="employee-form">
@@ -105,16 +105,11 @@
                     <button mat-button type="button" routerLink="/list" color="warn">
                         Abbrechen
                     </button>
-                    <button
-                        mat-flat-button
-                        color="primary"
-                        type="submit"
-                        style="padding: 0 30px; border-radius: 20px"
-                    >
+                    <button mat-flat-button color="primary" type="submit" class="save-btn">
                         <mat-icon>save</mat-icon> Speichern
                     </button>
                 </div>
             </form>
         </mat-card-content>
     </mat-card>
-</div>
+</section>

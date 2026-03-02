@@ -1,52 +1,51 @@
 .settings-container {
     padding: 20px;
     max-width: 1000px;
-    margin: 40px auto;
+    margin-inline: auto;
+    margin-block-start: 40px;
 }
 
 .header {
-    margin-bottom: 50px;
+    margin-block-end: 50px;
+
+    h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: #333;
+    }
+
+    p {
+        font-size: 1.125rem;
+        font-weight: 200;
+        color: grey;
+        margin: 15px 0 0;
+    }
 }
 
-h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 400;
-    color: #333;
-}
-
-p {
-    font-size: 1.125rem;
-    font-weight: 200;
-    color: grey;
-    margin: 15px 0 0 0;
-}
-
-/* Tabs Styling */
 .settings-tabs {
     background: white;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgb(0 0 0 / 5%);
 }
 
 .tab-icon {
-    margin-right: 8px;
+    margin-inline-end: 8px;
 }
 
 .tab-content {
     padding: 24px;
-    background-color: #f5f7fa; /* Gleicher Hintergrund wie Main Content */
+    background-color: #f5f7fa;
 }
 
-/* Karten innerhalb der Tabs */
 .settings-card {
-    margin-bottom: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+    margin-block-end: 20px;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 5%) !important;
     border-radius: 12px;
 }
 
 mat-card-header {
-    margin-bottom: 0px;
+    margin-block-end: 0;
 }
 
 .placeholder-text {
@@ -54,97 +53,99 @@ mat-card-header {
     font-style: italic;
     font-size: 14px;
     margin: 0;
+
+    &.padded {
+        padding: 16px;
+    }
 }
 
-/* --- STAMMDATEN: Positionen --- */
+.field-icon {
+    margin-inline-end: 8px;
+    color: grey;
+}
 
-/* Styling für die Material Liste */
+.position-icon {
+    color: grey;
+}
+
 .position-list {
     border: 1px solid #f0f0f0;
     border-radius: 8px;
     background: #fafafa;
-    padding-top: 0;
+    padding-block-start: 0;
+
+    mat-list-item {
+        border-block-end: 1px solid #f0f0f0;
+
+        &:last-child {
+            border-block-end: none;
+        }
+    }
 }
 
-.position-list mat-list-item {
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.position-list mat-list-item:last-child {
-    border-bottom: none; /* Der letzte Strich kommt weg */
-}
-
-/* NEU: Zwingt die Buttons im Container nebeneinander */
 .action-buttons {
     display: flex;
-    flex-direction: row;
     align-items: center;
 }
 
-/* Schiebt den Titel nach links und den Button nach rechts */
 .card-header-flex {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 20px;
-    /* WICHTIG: Keine width: 100% oder margins an den Seiten, das macht der mat-card-content! */
+    margin-block-end: 20px;
 }
 
-/* Damit Titel und Untertitel schön untereinander bleiben */
 .title-group {
     display: flex;
     flex-direction: column;
     margin-inline: 20px !important;
-    margin-top: 15px;
-}
+    margin-block-start: 15px;
 
-/* Entfernt heimliche Angular-Material-Ränder für perfekten Links-Bündig-Look */
-.title-group mat-card-title {
-    margin-inline: 0px !important;
-}
+    mat-card-title,
+    mat-card-subtitle {
+        margin-inline: 0 !important;
+    }
 
-.title-group mat-card-subtitle {
-    margin-inline: 0px !important;
-    font-weight: 200;
+    mat-card-subtitle {
+        font-weight: 200;
+    }
 }
 
 .addBtn {
-    margin-top: 20px;
-    margin-right: 20px;
+    margin-block-start: 20px;
+    margin-inline-end: 20px;
 }
 
-/* --- PROFIL: Passwort-Formular --- */
 .password-form {
     display: flex;
     flex-direction: column;
-    max-width: 400px; /* Damit das Formular nicht unendlich breit wird */
+    max-width: 400px;
 }
 
 .save-pw-btn {
-    align-self: flex-start; /* Button linksbündig unter den Feldern */
-    margin-top: 10px;
+    align-self: flex-start;
+    margin-block-start: 10px;
 }
 
-/* --- UNTERNEHMEN: Formular --- */
 .company-form {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 10px;
-}
+    margin-block-start: 10px;
 
-.company-form .full-width {
-    width: 100%;
-    max-width: 500px;
-}
+    .full-width {
+        width: 100%;
+        max-width: 500px;
+    }
 
-.company-form .form-row {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-}
+    .form-row {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
 
-.company-form .save-btn {
-    align-self: flex-start;
-    margin-top: 10px;
+    .save-btn {
+        align-self: flex-start;
+        margin-block-start: 10px;
+    }
 }

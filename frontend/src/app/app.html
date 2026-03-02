@@ -1,10 +1,10 @@
 @if (auth.isLoggedIn()) {
     <mat-sidenav-container class="sidenav-container">
         <mat-sidenav mode="side" opened class="sidenav">
-            <div class="sidenav-header">
-                <mat-icon style="margin-right: 12px; color: #1565c0">admin_panel_settings</mat-icon>
+            <header class="sidenav-header">
+                <mat-icon class="sidenav-logo">admin_panel_settings</mat-icon>
                 <span>HRSys</span>
-            </div>
+            </header>
 
             <mat-nav-list class="nav-list">
                 <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
@@ -64,9 +64,9 @@
                 </a>
 
                 <div class="menu-spacer"></div>
-                <mat-divider></mat-divider>
+                <mat-divider />
 
-                <a mat-list-item (click)="logout()" class="logout-item" style="cursor: pointer">
+                <a mat-list-item (click)="logout()" class="logout-item">
                     <mat-icon matListItemIcon>logout</mat-icon>
                     <span matListItemTitle>Abmelden</span>
                 </a>
@@ -74,11 +74,11 @@
         </mat-sidenav>
 
         <mat-sidenav-content class="main-content">
-            <router-outlet></router-outlet>
+            <router-outlet />
         </mat-sidenav-content>
     </mat-sidenav-container>
 } @else {
     <div class="login-wrapper">
-        <router-outlet></router-outlet>
+        <router-outlet />
     </div>
 }

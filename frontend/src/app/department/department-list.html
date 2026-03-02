@@ -1,12 +1,12 @@
-<div class="container">
-    <div class="header">
+<section class="container">
+    <header class="header">
         <h1>Abteilungen</h1>
         <p>Verwalte hier die Abteilungen deines Unternehmens.</p>
 
         <button mat-flat-button color="primary" class="add-btn" (click)="openForm()">
             <mat-icon>add</mat-icon> Neue Abteilung
         </button>
-    </div>
+    </header>
 
     <div class="grid">
         @for (dept of departments(); track dept.id) {
@@ -16,7 +16,7 @@
                         <mat-icon>domain</mat-icon>
                     </div>
                     <mat-card-title>{{ dept.name }}</mat-card-title>
-                    <mat-card-subtitle> {{ dept.employee_count }} Mitarbeiter </mat-card-subtitle>
+                    <mat-card-subtitle>{{ dept.employee_count }} Mitarbeiter</mat-card-subtitle>
                 </mat-card-header>
 
                 <mat-card-content class="content">
@@ -46,13 +46,11 @@
                     </div>
                 </mat-card-actions>
             </mat-card>
+        } @empty {
+            <div class="empty-state">
+                <mat-icon>domain_disabled</mat-icon>
+                <p>Keine Abteilungen gefunden.</p>
+            </div>
         }
     </div>
-
-    @if (departments().length === 0) {
-        <div class="empty-state">
-            <mat-icon>domain_disabled</mat-icon>
-            <p>Keine Abteilungen gefunden.</p>
-        </div>
-    }
-</div>
+</section>

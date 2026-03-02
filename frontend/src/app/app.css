@@ -1,4 +1,8 @@
-/* --- GLOBALE EINSTELLUNGEN --- */
+:host {
+    display: block;
+    height: 100dvh;
+}
+
 html,
 body {
     margin: 0;
@@ -8,118 +12,101 @@ body {
 }
 
 .sidenav-container {
-    height: 100vh;
+    height: 100dvh;
 }
 
-/* --- DIE SEITENLEISTE --- */
 .sidenav {
     width: 280px;
     background: white;
     border-right: none;
-    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.06);
+    box-shadow: 4px 0 24px rgb(0 0 0 / 6%);
     display: flex;
     flex-direction: column;
-
-    /* Verhindert den horizontalen Balken unten am Container selbst */
     overflow-x: hidden;
 }
 
-/* 🔥🔥🔥 DER SCROLLBAR FIX 🔥🔥🔥 
-   Wir nutzen ::ng-deep, damit Angular uns erlaubt, 
-   in den inneren Container von mat-sidenav einzugreifen.
-*/
-
-/* 1. Grundeinstellung: Scrollbar da, aber unsichtbar */
 ::ng-deep .mat-drawer-inner-container {
-    overflow-x: hidden !important; /* Horizontal aus */
-
-    /* Firefox: Transparent */
+    overflow-x: hidden !important;
     scrollbar-width: thin;
     scrollbar-color: transparent transparent;
     transition: scrollbar-color 0.3s ease;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: transparent;
+        border-radius: 4px;
+    }
 }
 
-/* Webkit (Chrome, Edge): Platz reservieren (6px), aber durchsichtig */
-::ng-deep .mat-drawer-inner-container::-webkit-scrollbar {
-    width: 6px;
-    background: transparent;
-}
-
-::ng-deep .mat-drawer-inner-container::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    border-radius: 4px;
-}
-
-/* 2. HOVER EFEKT: Wenn Maus auf .sidenav ist -> Sichtbar machen */
-
-/* Firefox: Grau werden */
 .sidenav:hover ::ng-deep .mat-drawer-inner-container {
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    scrollbar-color: rgb(0 0 0 / 20%) transparent;
+
+    &::-webkit-scrollbar-thumb {
+        background-color: rgb(0 0 0 / 20%);
+
+        &:hover {
+            background-color: rgb(0 0 0 / 40%);
+        }
+    }
 }
 
-/* Chrome/Edge: Daumen grau färben */
-.sidenav:hover ::ng-deep .mat-drawer-inner-container::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Wenn man direkt draufklickt: Dunkler */
-.sidenav:hover ::ng-deep .mat-drawer-inner-container::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.4);
-}
-
-/* --- HEADER --- */
 .sidenav-header {
     height: 64px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    padding-left: 24px;
+    padding-inline-start: 24px;
     background: white;
     color: #333;
     font-weight: 500;
     font-size: 20px;
     letter-spacing: 0.5px;
-    border-bottom: 1px solid #f0f0f0;
+    border-block-end: 1px solid #f0f0f0;
 }
 
-/* --- NAV LISTE --- */
+.sidenav-logo {
+    margin-inline-end: 12px;
+    color: #1565c0;
+}
+
 .nav-list {
     flex: 1;
     display: flex !important;
     flex-direction: column;
-    padding-top: 20px;
+    padding-block-start: 20px;
     width: 100%;
     box-sizing: border-box;
+
+    a[mat-list-item] {
+        margin: 4px 12px;
+        border-radius: 8px;
+        height: 48px;
+        color: #5f6368;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+        width: auto;
+
+        &:hover {
+            background-color: #f5f5f5;
+            color: #202124;
+        }
+    }
 }
 
-/* --- BUTTONS --- */
-.nav-list a[mat-list-item] {
-    margin: 4px 12px;
-    border-radius: 8px;
-    height: 48px;
-    color: #5f6368;
-    transition: all 0.2s ease;
-    box-sizing: border-box;
-    width: auto;
-}
-
-.nav-list a[mat-list-item]:hover {
-    background-color: #f5f5f5;
-    color: #202124;
-}
-
-/* Active State */
 .active-link {
     background-color: #e3f2fd !important;
     color: #1565c0 !important;
     font-weight: 500;
+
+    mat-icon {
+        color: #1565c0 !important;
+    }
 }
 
-.active-link mat-icon {
-    color: #1565c0 !important;
-}
-
-/* --- TEXTE --- */
 .menu-subheader {
     color: #9aa0a6;
     font-size: 11px;
@@ -138,26 +125,27 @@ mat-divider {
     flex: 1;
 }
 
-/* --- LOGOUT --- */
 .logout-item {
-    margin-bottom: 20px !important;
+    margin-block-end: 20px !important;
     color: #d32f2f !important;
-}
-.logout-item:hover {
-    background-color: #ffebee !important;
-}
-.logout-item mat-icon {
-    color: #d32f2f !important;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #ffebee !important;
+    }
+
+    mat-icon {
+        color: #d32f2f !important;
+    }
 }
 
-/* --- MAIN CONTENT --- */
 .main-content {
     background-color: #f5f7fa;
     padding: 0;
 }
 
 .login-wrapper {
-    height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
 }

@@ -1,70 +1,68 @@
 .container {
     padding: 20px;
-    max-width: 1000px; /* Etwas breiter für die Tabelle */
-    margin: 40px auto;
+    max-width: 1000px;
+    margin-inline: auto;
+    margin-block-start: 40px;
 }
 
 .header {
-    position: relative; /* WICHTIG: Damit der Button weiß, wo rechts oben ist */
-    margin-bottom: 50px;
+    position: relative;
+    margin-block-end: 50px;
+
+    h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: #333;
+    }
+
+    p {
+        font-size: 1.125rem;
+        font-weight: 200;
+        color: grey;
+        margin: 15px 0 0;
+    }
 }
 
-/* 2. Exakt identisch zu Settings & Dashboard */
-h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 400;
-    color: #333;
-}
-
-p {
-    font-size: 1.125rem;
-    font-weight: 200;
-    color: grey;
-    margin: 15px 0 0 0; /* Die 10px für den knackigeren Abstand */
-}
-
-/* 3. Der Button wird absolut rechts oben festgenagelt */
 .add-btn {
     position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: 4px; /* Ein minimaler Schubs nach unten, damit er optisch zur h1 passt */
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    margin-block-start: 4px;
 }
 
 .search-field {
     width: 100%;
-    margin-bottom: 10px;
+    margin-block-end: 10px;
 }
 
 .table-container {
-    border-radius: 8px; /* Runde Ecken für die Tabelle */
-    overflow: hidden; /* Damit Header Ecken nicht überstehen */
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 table {
     width: 100%;
 }
 
-/* --- Badges (Labels) --- */
 .badge {
     padding: 4px 10px;
-    border-radius: 16px; /* Pillen-Form */
+    border-radius: 16px;
     font-size: 12px;
     font-weight: 500;
     white-space: nowrap;
-}
 
-.dept-badge {
-    background-color: #e3f2fd;
-    color: #1565c0;
-    border: 1px solid #bbdefb;
-}
+    &.dept-badge {
+        background-color: #e3f2fd;
+        color: #1565c0;
+        border: 1px solid #bbdefb;
+    }
 
-.pos-badge {
-    background-color: #f3e5f5;
-    color: #7b1fa2;
-    border: 1px solid #e1bee7;
+    &.pos-badge {
+        background-color: #f3e5f5;
+        color: #7b1fa2;
+        border: 1px solid #e1bee7;
+    }
 }
 
 .empty-dash {
@@ -72,35 +70,42 @@ table {
     font-style: italic;
 }
 
-/* --- Status Icons --- */
-.status-icon.approved {
-    color: #4caf50;
-}
-.status-icon.pending {
-    color: #ff9800;
+.status-icon {
+    &.approved {
+        color: #4caf50;
+    }
+
+    &.pending {
+        color: #ff9800;
+    }
 }
 
-/* --- Zeilen Styling --- */
 .name-cell {
     font-weight: 500;
     font-size: 14px;
 }
 
 .actions-cell {
-    text-align: right;
+    text-align: end;
     white-space: nowrap;
 }
 
-/* Hervorhebung für nicht freigegebene Zeilen */
 .row-pending {
-    background-color: #fff8e1 !important; /* Ganz leichtes Gelb */
-}
-.row-pending:hover {
-    background-color: #ffecb3 !important; /* Dunkleres Gelb beim Hover */
+    background-color: #fff8e1 !important;
+
+    &:hover {
+        background-color: #ffecb3 !important;
+    }
 }
 
 .approve-btn {
-    color: #2e7d32; /* Dunkelgrün */
-    margin-right: 8px;
+    color: #2e7d32;
+    margin-inline-end: 8px;
     border-color: #a5d6a7;
+}
+
+.no-data-cell {
+    text-align: center;
+    padding: 20px;
+    color: gray;
 }

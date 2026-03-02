@@ -1,40 +1,38 @@
 .container {
     padding: 20px;
     max-width: 1000px;
-    margin: 40px auto;
+    margin-inline: auto;
+    margin-block-start: 40px;
 }
 
 .header {
-    position: relative; /* WICHTIG: Damit der Button weiß, wo rechts oben ist */
-    margin-bottom: 50px;
+    position: relative;
+    margin-block-end: 50px;
+
+    h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: 400;
+        color: #333;
+    }
+
+    p {
+        font-size: 1.125rem;
+        font-weight: 200;
+        color: grey;
+        margin: 15px 0 0;
+    }
 }
 
-/* 2. Exakt identisch zu Settings & Dashboard */
-h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 400;
-    color: #333;
-}
-
-p {
-    font-size: 1.125rem;
-    font-weight: 200;
-    color: grey;
-    margin: 15px 0 0 0; /* Die 10px für den knackigeren Abstand */
-}
-
-/* 3. Der Button wird absolut rechts oben festgenagelt */
 .add-btn {
     position: absolute;
-    top: 0;
-    right: 0;
-    margin-top: 4px; /* Ein minimaler Schubs nach unten, damit er optisch zur h1 passt */
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    margin-block-start: 4px;
 }
 
 .grid {
     display: grid;
-    /* Responsive Grid: Passt sich automatisch an */
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 24px;
 }
@@ -47,27 +45,25 @@ p {
     height: 100%;
     display: flex;
     flex-direction: column;
-}
 
-/* Hover-Effekt für Karten */
-.dept-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgb(0 0 0 / 10%);
+    }
 }
 
 .avatar-icon {
-    background: #e3f2fd; /* Helles Blau */
-    color: #1565c0; /* Dunkles Blau */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: #e3f2fd;
+    color: #1565c0;
+    display: grid;
+    place-items: center;
     border-radius: 50%;
 }
 
 .content {
-    flex: 1; /* Drückt die Actions nach unten */
-    margin-top: 16px;
-    padding-bottom: 16px;
+    flex: 1;
+    margin-block-start: 16px;
+    padding-block-end: 16px;
 }
 
 .description {
@@ -77,18 +73,19 @@ p {
 }
 
 .actions {
-    border-top: 1px solid #f0f0f0;
+    border-block-start: 1px solid #f0f0f0;
     padding: 8px;
 }
 
 .empty-state {
     text-align: center;
     color: #9e9e9e;
-    margin-top: 60px;
-}
-.empty-state mat-icon {
-    font-size: 48px;
-    height: 48px;
-    width: 48px;
-    margin-bottom: 10px;
+    margin-block-start: 60px;
+
+    mat-icon {
+        font-size: 48px;
+        height: 48px;
+        width: 48px;
+        margin-block-end: 10px;
+    }
 }
