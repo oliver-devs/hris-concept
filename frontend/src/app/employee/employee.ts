@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Position {
@@ -36,58 +35,58 @@ export interface CreateEmployeeResponse extends Employee {
     providedIn: 'root',
 })
 export class EmployeeService {
-    private http = inject(HttpClient);
+    private readonly http = inject(HttpClient);
     private readonly apiUrl = environment.apiUrl;
 
-    getEmployees(): Observable<Employee[]> {
+    getEmployees() {
         return this.http.get<Employee[]>(`${this.apiUrl}employees/`);
     }
 
-    getEmployee(id: number): Observable<Employee> {
+    getEmployee(id: number) {
         return this.http.get<Employee>(`${this.apiUrl}employees/${id}/`);
     }
 
-    createEmployee(employee: Employee): Observable<CreateEmployeeResponse> {
+    createEmployee(employee: Employee) {
         return this.http.post<CreateEmployeeResponse>(`${this.apiUrl}employees/`, employee);
     }
 
-    updateEmployee(id: number, employee: Employee): Observable<Employee> {
+    updateEmployee(id: number, employee: Employee) {
         return this.http.put<Employee>(`${this.apiUrl}employees/${id}/`, employee);
     }
 
-    deleteEmployee(id: number): Observable<void> {
+    deleteEmployee(id: number) {
         return this.http.delete<void>(`${this.apiUrl}employees/${id}/`);
     }
 
-    getDepartments(): Observable<Department[]> {
+    getDepartments() {
         return this.http.get<Department[]>(`${this.apiUrl}departments/`);
     }
 
-    createDepartment(dept: Department): Observable<Department> {
+    createDepartment(dept: Department) {
         return this.http.post<Department>(`${this.apiUrl}departments/`, dept);
     }
 
-    updateDepartment(id: number, dept: Department): Observable<Department> {
+    updateDepartment(id: number, dept: Department) {
         return this.http.put<Department>(`${this.apiUrl}departments/${id}/`, dept);
     }
 
-    deleteDepartment(id: number): Observable<void> {
+    deleteDepartment(id: number) {
         return this.http.delete<void>(`${this.apiUrl}departments/${id}/`);
     }
 
-    getPositions(): Observable<Position[]> {
+    getPositions() {
         return this.http.get<Position[]>(`${this.apiUrl}positions/`);
     }
 
-    createPosition(title: string): Observable<Position> {
+    createPosition(title: string) {
         return this.http.post<Position>(`${this.apiUrl}positions/`, { title });
     }
 
-    deletePosition(id: number): Observable<void> {
+    deletePosition(id: number) {
         return this.http.delete<void>(`${this.apiUrl}positions/${id}/`);
     }
 
-    updatePosition(id: number, position: Partial<Position>): Observable<Position> {
+    updatePosition(id: number, position: Partial<Position>) {
         return this.http.put<Position>(`${this.apiUrl}positions/${id}/`, position);
     }
 }

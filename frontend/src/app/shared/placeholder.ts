@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-placeholder',
-    standalone: true,
-    imports: [CommonModule, MatCardModule, MatIconModule],
+    imports: [MatCardModule, MatIconModule],
     template: `
         <div class="placeholder-container">
             <mat-card class="placeholder-card">
@@ -53,8 +51,9 @@ import { ActivatedRoute } from '@angular/router';
     `,
 })
 export class PlaceholderComponent implements OnInit {
+    private readonly route = inject(ActivatedRoute);
+
     title = 'In Arbeit';
-    constructor(private route: ActivatedRoute) {}
 
     ngOnInit() {
         this.route.data.subscribe((data) => {

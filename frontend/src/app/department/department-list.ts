@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { EmployeeService, Department } from '../employee/employee';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,30 +12,22 @@ import { DepartmentFormComponent } from './department-form';
 
 @Component({
     selector: 'app-department-list',
-    standalone: true,
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatTooltipModule,
-    ],
+    imports: [MatCardModule, MatButtonModule, MatIconModule, MatDialogModule, MatTooltipModule],
     templateUrl: './department-list.html',
     styleUrl: './department-list.css',
 })
 export class DepartmentListComponent implements OnInit {
-    private service = inject(EmployeeService);
-    private dialog = inject(MatDialog);
-    private snackBar = inject(MatSnackBar);
+    private readonly service = inject(EmployeeService);
+    private readonly dialog = inject(MatDialog);
+    private readonly snackBar = inject(MatSnackBar);
 
-    departments = signal<Department[]>([]);
+    readonly departments = signal<Department[]>([]);
 
     ngOnInit() {
         this.load();
     }
 
-    load() {
+    private load() {
         this.service.getDepartments().subscribe((data) => {
             this.departments.set(data);
         });

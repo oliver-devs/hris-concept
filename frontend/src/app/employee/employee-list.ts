@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,9 +14,7 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog';
 
 @Component({
     selector: 'app-employee-list',
-    standalone: true,
     imports: [
-        CommonModule,
         MatTableModule,
         MatButtonModule,
         MatIconModule,
@@ -30,14 +27,14 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog';
     styleUrl: './employee-list.css',
 })
 export class EmployeeListComponent implements OnInit {
-    private service = inject(EmployeeService);
-    private snackBar = inject(MatSnackBar);
-    private dialog = inject(MatDialog);
+    private readonly service = inject(EmployeeService);
+    private readonly snackBar = inject(MatSnackBar);
+    private readonly dialog = inject(MatDialog);
 
-    employees = signal<Employee[]>([]);
-    searchQuery = signal('');
+    readonly employees = signal<Employee[]>([]);
+    readonly searchQuery = signal('');
 
-    filteredEmployees = computed(() => {
+    readonly filteredEmployees = computed(() => {
         const query = this.searchQuery().toLowerCase().trim();
         const list = this.employees();
 
@@ -60,7 +57,7 @@ export class EmployeeListComponent implements OnInit {
         });
     });
 
-    displayedColumns: string[] = ['status', 'name', 'email', 'department', 'position', 'actions'];
+    readonly displayedColumns = ['status', 'name', 'email', 'department', 'position', 'actions'] as const;
 
     ngOnInit() {
         this.loadEmployees();
@@ -76,12 +73,8 @@ export class EmployeeListComponent implements OnInit {
     approveEmployee(emp: Employee) {
         if (!emp.id) return;
 
-        const updatedEmp = { ...emp, is_approved: true };
-
-        this.service.updateEmployee(emp.id, updatedEmp).subscribe(() => {
-            this.snackBar.open(`${emp.first_name} wurde freigegeben!`, 'OK', {
-                duration: 3000,
-            });
+        this.service.updateEmployee(emp.id, { ...emp, is_approved: true }).subscribe(() => {
+            this.snackBar.open(`${emp.first_name} wurde freigegeben!`, 'OK', { duration: 3000 });
             this.loadEmployees();
         });
     }

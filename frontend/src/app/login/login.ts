@@ -1,5 +1,4 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,9 +11,7 @@ import { AuthService } from '../auth/auth.service';
 
 @Component({
     selector: 'app-login',
-    standalone: true,
     imports: [
-        CommonModule,
         FormsModule,
         MatCardModule,
         MatFormFieldModule,
@@ -26,13 +23,13 @@ import { AuthService } from '../auth/auth.service';
     styleUrl: './login.css',
 })
 export class LoginComponent {
-    private auth = inject(AuthService);
-    private router = inject(Router);
-    private snackBar = inject(MatSnackBar);
+    private readonly auth = inject(AuthService);
+    private readonly router = inject(Router);
+    private readonly snackBar = inject(MatSnackBar);
 
     username = '';
     password = '';
-    isLoading = signal(false);
+    readonly isLoading = signal(false);
 
     onLogin() {
         if (this.isLoading()) return;
@@ -40,9 +37,7 @@ export class LoginComponent {
         this.isLoading.set(true);
 
         this.auth.login(this.username, this.password).subscribe({
-            next: () => {
-                this.router.navigate(['/dashboard']);
-            },
+            next: () => this.router.navigate(['/dashboard']),
             error: () => {
                 this.isLoading.set(false);
                 this.snackBar.open('Falsche Zugangsdaten!', 'OK', { duration: 3000 });

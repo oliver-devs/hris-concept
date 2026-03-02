@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
 
 export interface PasswordDialogData {
     username: string;
@@ -10,8 +9,7 @@ export interface PasswordDialogData {
 
 @Component({
     selector: 'app-password-dialog',
-    standalone: true,
-    imports: [MatDialogModule, MatButtonModule, MatIconModule],
+    imports: [MatDialogModule, MatButtonModule],
     template: `
         <h2 mat-dialog-title>Mitarbeiter angelegt</h2>
 
@@ -36,39 +34,40 @@ export interface PasswordDialogData {
             </button>
         </mat-dialog-actions>
     `,
-    styles: [
-        `
-            .credentials {
-                background: #f5f5f5;
-                border-radius: 8px;
-                padding: 16px;
-                margin: 16px 0;
+    styles: `
+        .credentials {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 16px;
+            margin-block: 16px;
+        }
+
+        .credential-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            &:not(:last-child) {
+                margin-block-end: 10px;
             }
-            .credential-row {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                margin-bottom: 10px;
-            }
-            .credential-row:last-child {
-                margin-bottom: 0;
-            }
-            .label {
-                color: #666;
-                min-width: 160px;
-                font-size: 0.9rem;
-            }
-            code {
-                font-family: monospace;
-                font-size: 1rem;
-                background: #fff;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                padding: 4px 10px;
-                letter-spacing: 0.05em;
-            }
-        `,
-    ],
+        }
+
+        .label {
+            color: #666;
+            min-width: 160px;
+            font-size: 0.9rem;
+        }
+
+        code {
+            font-family: monospace;
+            font-size: 1rem;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 4px 10px;
+            letter-spacing: 0.05em;
+        }
+    `,
 })
 export class PasswordDialogComponent {
     readonly dialogRef = inject(MatDialogRef<PasswordDialogComponent>);

@@ -1,5 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,27 +8,26 @@ import { AuthService, CurrentUser } from '../auth/auth.service';
 
 @Component({
     selector: 'app-dashboard',
-    standalone: true,
-    imports: [CommonModule, MatCardModule, MatIconModule, MatButtonModule, RouterModule],
+    imports: [MatCardModule, MatIconModule, MatButtonModule, RouterModule],
     templateUrl: './dashboard.html',
     styleUrl: './dashboard.css',
 })
 export class DashboardComponent implements OnInit {
-    private service = inject(EmployeeService);
-    private authService = inject(AuthService);
+    private readonly service = inject(EmployeeService);
+    private readonly authService = inject(AuthService);
 
-    totalEmployees = signal(0);
-    recentEmployees = signal<Employee[]>([]);
-    departments = signal<Department[]>([]);
-    currentUser = signal<CurrentUser | null>(null);
+    readonly totalEmployees = signal(0);
+    readonly recentEmployees = signal<Employee[]>([]);
+    readonly departments = signal<Department[]>([]);
+    readonly currentUser = signal<CurrentUser | null>(null);
 
-    formattedName = computed(() => {
+    readonly formattedName = computed(() => {
         const user = this.currentUser();
-        if (!user || !user.username) return 'Lade...';
+        if (!user?.username) return 'Lade...';
 
         return user.username
             .split('.')
-            .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
+            .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
             .join(' ');
     });
 
@@ -37,7 +35,7 @@ export class DashboardComponent implements OnInit {
         this.loadData();
     }
 
-    loadData() {
+    private loadData() {
         this.authService.getCurrentUser().subscribe({
             next: (user) => this.currentUser.set(user),
             error: () => this.currentUser.set({ username: 'Gast', email: '' }),

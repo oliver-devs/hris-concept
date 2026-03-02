@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { MatTabsModule } from '@angular/material/tabs';
@@ -19,9 +18,7 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog';
 
 @Component({
     selector: 'app-settings',
-    standalone: true,
     imports: [
-        CommonModule,
         FormsModule,
         MatTabsModule,
         MatCardModule,
@@ -36,12 +33,12 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog';
     styleUrl: './settings.css',
 })
 export class SettingsComponent implements OnInit {
-    private service = inject(EmployeeService);
-    private authService = inject(AuthService);
-    private dialog = inject(MatDialog);
-    private snackBar = inject(MatSnackBar);
+    private readonly service = inject(EmployeeService);
+    private readonly authService = inject(AuthService);
+    private readonly dialog = inject(MatDialog);
+    private readonly snackBar = inject(MatSnackBar);
 
-    positions = signal<Position[]>([]);
+    readonly positions = signal<Position[]>([]);
 
     companyData = {
         name: 'Meine Firma GmbH',
@@ -63,7 +60,7 @@ export class SettingsComponent implements OnInit {
         this.snackBar.open('Unternehmensdaten erfolgreich gespeichert!', 'OK', { duration: 3000 });
     }
 
-    loadPositions() {
+    private loadPositions() {
         this.service.getPositions().subscribe({
             next: (data) => this.positions.set(data),
             error: (err) => console.error('Fehler beim Laden der Positionen:', err),

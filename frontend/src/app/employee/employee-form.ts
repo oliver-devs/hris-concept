@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { forkJoin } from 'rxjs';
@@ -17,9 +16,7 @@ import { PasswordDialogComponent } from '../shared/password-dialog';
 
 @Component({
     selector: 'app-employee-form',
-    standalone: true,
     imports: [
-        CommonModule,
         FormsModule,
         MatInputModule,
         MatButtonModule,
@@ -33,17 +30,17 @@ import { PasswordDialogComponent } from '../shared/password-dialog';
     styleUrl: './employee-form.css',
 })
 export class EmployeeFormComponent implements OnInit {
-    private service = inject(EmployeeService);
-    private router = inject(Router);
-    private route = inject(ActivatedRoute);
-    private snackBar = inject(MatSnackBar);
-    private dialog = inject(MatDialog);
+    private readonly service = inject(EmployeeService);
+    private readonly router = inject(Router);
+    private readonly route = inject(ActivatedRoute);
+    private readonly snackBar = inject(MatSnackBar);
+    private readonly dialog = inject(MatDialog);
 
-    departments = signal<Department[]>([]);
-    positions = signal<Position[]>([]);
-    isEditMode = signal(false);
+    readonly departments = signal<Department[]>([]);
+    readonly positions = signal<Position[]>([]);
+    readonly isEditMode = signal(false);
 
-    employee = signal<Employee>({
+    readonly employee = signal<Employee>({
         first_name: '',
         last_name: '',
         email: '',
@@ -133,7 +130,7 @@ export class EmployeeFormComponent implements OnInit {
         }
     }
 
-    goBack(message: string) {
+    private goBack(message: string) {
         this.snackBar.open(message, 'Super', { duration: 3000 });
         this.router.navigate(['/list']);
     }

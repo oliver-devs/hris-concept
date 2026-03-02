@@ -1,5 +1,4 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -9,24 +8,16 @@ import { EmployeeService, Department } from '../employee/employee';
 
 @Component({
     selector: 'app-department-form',
-    standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        MatDialogModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-    ],
+    imports: [FormsModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatButtonModule],
     templateUrl: './department-form.html',
     styleUrl: './department-form.css',
 })
 export class DepartmentFormComponent {
-    private service = inject(EmployeeService);
-    private ref = inject(MatDialogRef<DepartmentFormComponent>);
-    private data = inject<Department>(MAT_DIALOG_DATA, { optional: true });
+    private readonly service = inject(EmployeeService);
+    private readonly ref = inject(MatDialogRef<DepartmentFormComponent>);
+    private readonly data = inject<Department>(MAT_DIALOG_DATA, { optional: true });
 
-    isEditMode = signal(false);
+    readonly isEditMode = signal(false);
     dept: Department = { name: '', description: '' };
 
     constructor() {
