@@ -19,17 +19,23 @@ export class PositionFormComponent {
     private readonly service = inject(PositionService);
     private readonly ref = inject(MatDialogRef<PositionFormComponent>);
     private readonly snackBar = inject(MatSnackBar);
-    private readonly data = inject<Position>(MAT_DIALOG_DATA, { optional: true });
+    private readonly data = inject<Partial<Position>>(MAT_DIALOG_DATA, { optional: true });
 
     readonly isEditMode: boolean;
     pos: Partial<Position>;
 
     constructor() {
-        if (this.data) {
+        if (this.data?.id) {
             this.pos = { ...this.data };
             this.isEditMode = true;
         } else {
-            this.pos = { title: '', can_approve: false, requires_dual_approval: false };
+            this.pos = {
+                department: this.data?.department,
+                title: '',
+                is_management: false,
+                can_approve: false,
+                requires_dual_approval: false,
+            };
             this.isEditMode = false;
         }
     }

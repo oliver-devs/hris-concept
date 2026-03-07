@@ -1,7 +1,6 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { forkJoin } from 'rxjs';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -42,53 +41,42 @@ export class EmployeeFormComponent implements OnInit {
     private readonly dialog = inject(MatDialog);
 
     readonly departments = signal<Department[]>([]);
-    readonly positions = signal<Position[]>([]);
+    readonly allPositions = signal<Position[]>([]);
     readonly isEditMode = signal(false);
 
     readonly employee = signal<Employee>({
         first_name: '',
         last_name: '',
         email: '',
-        department: '',
-        position: '',
+        department: 0,
+        position: null,
+    });
+
+    readonly filteredPositions = computed(() => {
+        const deptId = this.employee().department;
+        if (!deptId) return [];
+        return this.allPositions().filter((p) => p.department === deptId);
     });
 
     ngOnInit() {
-        forkJoin([this.departmentService.getDepartments(), this.positionService.getPositions()]).subscribe(
-            ([depts, positions]) => {
-                this.departments.set(depts);
-                this.positions.set(positions);
+        this.departmentService.getDepartments().subscribe((depts) => {
+            this.departments.set(depts);
+
+            this.positionService.getPositions().subscribe((positions) => {
+                this.allPositions.set(positions);
 
                 const id = this.route.snapshot.paramMap.get('id');
                 if (id) {
                     this.isEditMode.set(true);
                     this.loadEmployee(+id);
                 }
-            },
-        );
+            });
+        });
     }
 
     loadEmployee(id: number) {
         this.employeeService.getEmployee(id).subscribe({
-            next: (data) => {
-                const empData = { ...data };
-
-                if (typeof empData.position === 'number') {
-                    const foundPos = this.positions().find((p) => p.id === empData.position);
-                    if (foundPos) empData.position = foundPos.title;
-                } else if (empData.position && typeof empData.position === 'object') {
-                    empData.position = (empData.position as { title: string }).title;
-                }
-
-                if (typeof empData.department === 'number') {
-                    const foundDept = this.departments().find((d) => d.id === empData.department);
-                    if (foundDept) empData.department = foundDept.name;
-                } else if (empData.department && typeof empData.department === 'object') {
-                    empData.department = (empData.department as { name: string }).name;
-                }
-
-                this.employee.set(empData);
-            },
+            next: (data) => this.employee.set(data),
             error: (err) => {
                 this.snackBar.open('Fehler beim Laden', 'OK');
                 console.error(err);
@@ -97,10 +85,14 @@ export class EmployeeFormComponent implements OnInit {
     }
 
     updateField(key: keyof Employee, value: Employee[keyof Employee]) {
-        this.employee.update((current) => ({
-            ...current,
-            [key]: value,
-        }));
+        this.employee.update((current) => {
+            const updated = { ...current, [key]: value };
+            // Position zurücksetzen wenn Abteilung wechselt
+            if (key === 'department') {
+                updated.position = null;
+            }
+            return updated;
+        });
     }
 
     save() {

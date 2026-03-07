@@ -5,8 +5,8 @@ from .models import Absence, Department, Employee, Position
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ("first_name", "last_name", "email", "department", "position", "is_approved")
-    list_filter = ("is_approved", "department", "position")
+    list_display = ("first_name", "last_name", "email", "department", "position", "user")
+    list_filter = ("department", "position")
     search_fields = ("first_name", "last_name", "email")
     list_per_page = 25
 
@@ -19,8 +19,8 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 @admin.register(Position)
 class PositionAdmin(admin.ModelAdmin):
-    list_display = ("title", "description", "group", "can_approve", "requires_dual_approval")
-    list_filter = ("group", "can_approve", "requires_dual_approval")
+    list_display = ("title", "department", "is_management", "can_approve", "requires_dual_approval")
+    list_filter = ("department", "is_management", "can_approve", "requires_dual_approval")
     search_fields = ("title",)
 
 

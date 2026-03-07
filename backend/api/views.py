@@ -12,14 +12,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Absence, Department, Employee, Position
-from .permissions import IsOwnerOrStaff
+from .permissions import IsManagementOrReadOnly, IsOwnerOrStaff
 from .serializers import (
     AbsenceSerializer,
     DepartmentSerializer,
     EmployeeSerializer,
     PositionSerializer,
 )
-from .services import get_employee_for_user, user_can_approve
+from .services import get_employee_for_user, user_can_approve, user_is_management
 
 _UMLAUT_MAP = str.maketrans({"ä": "ae", "ö": "oe", "ü": "ue", "ß": "ss"})
 _PASSWORD_ALPHABET = string.ascii_letters + string.digits + "!@#$%"
@@ -29,19 +29,25 @@ _PASSWORD_LENGTH = 12
 class DepartmentViewSet(viewsets.ModelViewSet):
     queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsManagementOrReadOnly]
 
 
 class PositionViewSet(viewsets.ModelViewSet):
-    queryset = Position.objects.all()
     serializer_class = PositionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsManagementOrReadOnly]
+
+    def get_queryset(self):
+        qs = Position.objects.all()
+        department = self.request.query_params.get("department")
+        if department:
+            qs = qs.filter(department_id=department)
+        return qs
 
 
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsManagementOrReadOnly]
 
     def create(self, request: Request, *args, **kwargs) -> Response:
         serializer = self.get_serializer(data=request.data)
@@ -51,16 +57,16 @@ class EmployeeViewSet(viewsets.ModelViewSet):
             secrets.choice(_PASSWORD_ALPHABET) for _ in range(_PASSWORD_LENGTH)
         )
 
-        employee = serializer.save()
-
-        username = f"{employee.first_name}.{employee.last_name}".lower()
+        username = f"{serializer.validated_data['first_name']}.{serializer.validated_data['last_name']}".lower()
         username = username.translate(_UMLAUT_MAP)
 
         user, _created = User.objects.get_or_create(
-            username=username, defaults={"email": employee.email}
+            username=username, defaults={"email": serializer.validated_data["email"]}
         )
         user.set_password(password)
         user.save()
+
+        employee = serializer.save(user=user)
 
         headers = self.get_success_headers(serializer.data)
         return Response(
@@ -86,8 +92,8 @@ class AbsenceViewSet(viewsets.ModelViewSet):
         is_own = creator and creator.id == employee.id
 
         # Nur Genehmiger/Staff dürfen für andere anlegen
-        if not self.request.user.is_staff and not can_approve:
-            if employee.email != self.request.user.email:
+        if not user_is_management(self.request.user) and not can_approve:
+            if employee.user_id != self.request.user.id:
                 raise PermissionDenied(
                     "Du kannst nur Abwesenheiten für dich selbst anlegen."
                 )
@@ -158,14 +164,25 @@ class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request: Request) -> Response:
-        return Response(
-            {
-                "username": request.user.username,
-                "email": request.user.email,
-                "is_staff": request.user.is_staff,
-                "can_approve": user_can_approve(request.user),
-            }
-        )
+        from .services import get_employee_for_user
+
+        data = {
+            "username": request.user.username,
+            "email": request.user.email,
+            "is_management": user_is_management(request.user),
+            "can_approve": user_can_approve(request.user),
+        }
+
+        emp = get_employee_for_user(request.user)
+        if emp:
+            data["employee_id"] = emp.id
+            data["first_name"] = emp.first_name
+            data["last_name"] = emp.last_name
+            data["department_id"] = emp.department_id
+            data["department_name"] = emp.department.name if emp.department else None
+            data["position_title"] = emp.position.title if emp.position else None
+
+        return Response(data)
 
 
 class ChangePasswordView(APIView):
@@ -176,11 +193,19 @@ class ChangePasswordView(APIView):
         old_password = request.data.get("old_password")
         new_password = request.data.get("new_password")
 
+        if not old_password or not new_password:
+            raise ValidationError({"detail": "Altes und neues Passwort sind erforderlich."})
+
         if not user.check_password(old_password):
-            return Response(
-                {"detail": "Altes Passwort ist falsch."},
-                status=HTTPStatus.BAD_REQUEST,
-            )
+            raise ValidationError({"detail": "Altes Passwort ist falsch."})
+
+        from django.contrib.auth.password_validation import validate_password
+        from django.core.exceptions import ValidationError as DjangoValidationError
+
+        try:
+            validate_password(new_password, user=user)
+        except DjangoValidationError as exc:
+            raise ValidationError({"detail": exc.messages})
 
         user.set_password(new_password)
         user.save()

@@ -10,11 +10,20 @@ if TYPE_CHECKING:
 
 def get_employee_for_user(user: User) -> Employee | None:
     try:
-        return Employee.objects.select_related("position").get(email=user.email)
+        return Employee.objects.select_related("position").get(user=user)
     except Employee.DoesNotExist:
         return None
 
 
+def user_is_management(user: User) -> bool:
+    if user.is_staff:
+        return True
+    emp = get_employee_for_user(user)
+    return bool(emp and emp.position and emp.position.is_management)
+
+
 def user_can_approve(user: User) -> bool:
+    if user_is_management(user):
+        return True
     emp = get_employee_for_user(user)
     return bool(emp and emp.position and emp.position.can_approve)

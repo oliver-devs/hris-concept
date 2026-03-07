@@ -10,7 +10,12 @@ export class PositionService {
     private readonly http = inject(HttpClient);
     private readonly apiUrl = environment.apiUrl;
 
-    getPositions() {
+    getPositions(departmentId?: number) {
+        if (departmentId) {
+            return this.http.get<Position[]>(`${this.apiUrl}positions/`, {
+                params: { department: departmentId.toString() },
+            });
+        }
         return this.http.get<Position[]>(`${this.apiUrl}positions/`);
     }
 

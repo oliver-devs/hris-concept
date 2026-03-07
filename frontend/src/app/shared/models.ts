@@ -1,10 +1,12 @@
 export interface Position {
     id: number;
+    department: number;
     title: string;
     description?: string;
-    group?: number;
+    is_management?: boolean;
     can_approve?: boolean;
     requires_dual_approval?: boolean;
+    employee_count?: number;
 }
 
 export interface Department {
@@ -12,6 +14,7 @@ export interface Department {
     name: string;
     description: string;
     employee_count?: number;
+    position_count?: number;
 }
 
 export interface Employee {
@@ -19,9 +22,10 @@ export interface Employee {
     first_name: string;
     last_name: string;
     email: string;
-    department: string | number;
-    position?: string | number;
-    is_approved?: boolean;
+    department: number;
+    department_name?: string;
+    position?: number | null;
+    position_title?: string | null;
 }
 
 export interface Absence {

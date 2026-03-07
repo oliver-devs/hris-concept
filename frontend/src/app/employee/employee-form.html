@@ -75,7 +75,7 @@
                         required
                     >
                         @for (dept of departments(); track dept.id) {
-                            <mat-option [value]="dept.name">{{ dept.name }}</mat-option>
+                            <mat-option [value]="dept.id">{{ dept.name }}</mat-option>
                         }
                     </mat-select>
                     <mat-icon matSuffix>domain</mat-icon>
@@ -88,13 +88,18 @@
                         (ngModelChange)="updateField('position', $event)"
                         name="position"
                         required
+                        [disabled]="!employee().department"
                         #posInput="ngModel"
                     >
-                        @for (pos of positions(); track pos.id) {
-                            <mat-option [value]="pos.title">{{ pos.title }}</mat-option>
+                        @for (pos of filteredPositions(); track pos.id) {
+                            <mat-option [value]="pos.id">{{ pos.title }}</mat-option>
                         }
                     </mat-select>
                     <mat-icon matSuffix>badge</mat-icon>
+
+                    @if (!employee().department) {
+                        <mat-hint>Bitte zuerst eine Abteilung wählen</mat-hint>
+                    }
 
                     @if (posInput.invalid && (posInput.dirty || posInput.touched)) {
                         <mat-error>Bitte eine Position auswählen!</mat-error>

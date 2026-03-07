@@ -7,13 +7,21 @@
             <input matInput [(ngModel)]="pos.title" placeholder="z.B. Projektmanager" />
         </mat-form-field>
 
-        <mat-checkbox [(ngModel)]="pos.can_approve">
-            Kann Abwesenheiten genehmigen
-        </mat-checkbox>
+        <div class="permissions-section">
+            <span class="section-label">Berechtigungen</span>
 
-        <mat-checkbox [(ngModel)]="pos.requires_dual_approval">
-            4-Augen-Prinzip (2 Genehmigungen erforderlich)
-        </mat-checkbox>
+            <mat-checkbox [(ngModel)]="pos.is_management">
+                Verwaltungsrechte (Mitarbeiter, Stammdaten, Einstellungen)
+            </mat-checkbox>
+
+            <mat-checkbox [(ngModel)]="pos.can_approve">
+                Kann Abwesenheiten genehmigen
+            </mat-checkbox>
+
+            <mat-checkbox [(ngModel)]="pos.requires_dual_approval">
+                4-Augen-Prinzip (2 Genehmigungen erforderlich)
+            </mat-checkbox>
+        </div>
     </div>
 </mat-dialog-content>
 

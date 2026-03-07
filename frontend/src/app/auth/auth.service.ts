@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -7,8 +7,14 @@ import { environment } from '../../environments/environment';
 export interface CurrentUser {
     username: string;
     email: string;
-    is_staff?: boolean;
+    is_management?: boolean;
     can_approve?: boolean;
+    employee_id?: number;
+    first_name?: string;
+    last_name?: string;
+    department_id?: number;
+    department_name?: string;
+    position_title?: string;
 }
 
 export interface ChangePasswordResponse {
@@ -24,12 +30,22 @@ export class AuthService {
     private readonly apiUrl = environment.apiUrl;
 
     readonly isLoggedIn = signal<boolean>(!!localStorage.getItem('token'));
+    readonly currentUser = signal<CurrentUser | null>(null);
+    readonly isManagement = computed(() => this.currentUser()?.is_management ?? false);
+    readonly canApprove = computed(() => this.currentUser()?.can_approve ?? false);
+
+    constructor() {
+        if (this.isLoggedIn()) {
+            this.loadCurrentUser();
+        }
+    }
 
     login(username: string, password: string) {
         return this.http.post<{ token: string }>(`${this.apiUrl}login/`, { username, password }).pipe(
             tap((response) => {
                 localStorage.setItem('token', response.token);
                 this.isLoggedIn.set(true);
+                this.loadCurrentUser();
             }),
         );
     }
@@ -37,6 +53,7 @@ export class AuthService {
     logout() {
         localStorage.removeItem('token');
         this.isLoggedIn.set(false);
+        this.currentUser.set(null);
         this.router.navigate(['/login']);
     }
 
@@ -50,5 +67,12 @@ export class AuthService {
 
     changePassword(data: { old_password: string; new_password: string }) {
         return this.http.post<ChangePasswordResponse>(`${this.apiUrl}change-password/`, data);
+    }
+
+    private loadCurrentUser() {
+        this.getCurrentUser().subscribe({
+            next: (user) => this.currentUser.set(user),
+            error: () => this.logout(),
+        });
     }
 }

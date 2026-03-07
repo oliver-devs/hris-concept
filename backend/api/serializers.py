@@ -4,35 +4,37 @@ from .models import Absence, Department, Employee, Position
 
 
 class PositionSerializer(serializers.ModelSerializer):
-    group_name = serializers.CharField(source="group.name", read_only=True)
+    employee_count = serializers.IntegerField(source="employees.count", read_only=True)
 
     class Meta:
         model = Position
         fields = [
-            "id", "title", "description", "group", "group_name",
-            "can_approve", "requires_dual_approval",
+            "id", "department", "title", "description",
+            "is_management", "can_approve", "requires_dual_approval", "employee_count",
         ]
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
     employee_count = serializers.IntegerField(source="employees.count", read_only=True)
+    position_count = serializers.IntegerField(source="positions.count", read_only=True)
 
     class Meta:
         model = Department
-        fields = ["id", "name", "description", "employee_count"]
+        fields = ["id", "name", "description", "employee_count", "position_count"]
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
-    department = serializers.SlugRelatedField(
-        queryset=Department.objects.all(), slug_field="name"
-    )
-    position = serializers.SlugRelatedField(
-        queryset=Position.objects.all(), slug_field="title", allow_null=True
-    )
+    department_name = serializers.CharField(source="department.name", read_only=True)
+    position_title = serializers.CharField(source="position.title", read_only=True, default=None)
 
     class Meta:
         model = Employee
-        fields = "__all__"
+        fields = [
+            "id", "first_name", "last_name", "email",
+            "department", "department_name",
+            "position", "position_title",
+            "created_at",
+        ]
 
 
 class AbsenceSerializer(serializers.ModelSerializer):

@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     AbsenceViewSet,
     ChangePasswordView,
+    CurrentUserView,
     DepartmentViewSet,
     EmployeeViewSet,
     PositionViewSet,
@@ -13,11 +14,12 @@ from .views import (
 router = DefaultRouter()
 router.register(r"employees", EmployeeViewSet)
 router.register(r"departments", DepartmentViewSet)
-router.register(r"positions", PositionViewSet)
+router.register(r"positions", PositionViewSet, basename="position")
 router.register(r"absences", AbsenceViewSet)
 
 urlpatterns = [
     path("login/", obtain_auth_token, name="login"),
+    path("me/", CurrentUserView.as_view(), name="current-user"),
     path("change-password/", ChangePasswordView.as_view(), name="change-password"),
     path("", include(router.urls)),
 ]

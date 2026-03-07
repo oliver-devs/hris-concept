@@ -2,69 +2,61 @@
     <mat-sidenav-container class="sidenav-container">
         <mat-sidenav mode="side" opened class="sidenav">
             <header class="sidenav-header">
-                <mat-icon class="sidenav-logo">admin_panel_settings</mat-icon>
-                <span>HRSys</span>
+                <div class="branding-section">
+                    <img src="/company-logo.svg" alt="Company Logo" class="company-logo-small" />
+                    <div class="branding-text">
+                        <span class="company-title">{{ companyService.companyData().name }}</span>
+                        <div class="software-info">
+                            <span class="software-title">{{ companyService.companyData().softwareName }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                @if (auth.currentUser(); as user) {
+                    <div class="user-section">
+                        <div class="user-avatar-container">
+                            <mat-icon class="user-avatar">person</mat-icon>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name">{{ user.first_name }} {{ user.last_name }}</span>
+                            <span class="user-role">
+                                {{ user.position_title || 'Mitarbeiter' }}
+                                @if (user.department_name) {
+                                    · {{ user.department_name }}
+                                }
+                            </span>
+                        </div>
+                    </div>
+                }
             </header>
 
             <mat-nav-list class="nav-list">
                 <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
                     <mat-icon matListItemIcon>dashboard</mat-icon>
-                    <span matListItemTitle>Dashboard</span>
-                </a>
-
-                <a mat-list-item routerLink="/analytics" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>bar_chart</mat-icon>
-                    <span matListItemTitle>Statistiken</span>
+                    <span matListItemTitle>Mein Dashboard</span>
                 </a>
 
                 <div class="menu-subheader">Personal</div>
 
-                <a mat-list-item routerLink="/list" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>groups</mat-icon>
-                    <span matListItemTitle>Mitarbeiter</span>
-                </a>
-
-                <a mat-list-item routerLink="/org-chart" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>account_tree</mat-icon>
-                    <span matListItemTitle>Organigramm</span>
-                </a>
+                @if (auth.isManagement()) {
+                    <a mat-list-item routerLink="/list" routerLinkActive="active-link">
+                        <mat-icon matListItemIcon>groups</mat-icon>
+                        <span matListItemTitle>Mitarbeiter</span>
+                    </a>
+                }
 
                 <a mat-list-item routerLink="/calendar" routerLinkActive="active-link">
                     <mat-icon matListItemIcon>event_note</mat-icon>
-                    <span matListItemTitle>Urlaubsplaner</span>
+                    <span matListItemTitle>Abwesenheiten</span>
                 </a>
 
-                <a mat-list-item routerLink="/time-tracking" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>schedule</mat-icon>
-                    <span matListItemTitle>Zeiterfassung</span>
-                </a>
-
-                <a mat-list-item routerLink="/documents" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>folder_shared</mat-icon>
-                    <span matListItemTitle>Dokumente</span>
-                </a>
-
-                <div class="menu-subheader">Recruiting</div>
-
-                <a mat-list-item routerLink="/applicants" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>person_search</mat-icon>
-                    <span matListItemTitle>Bewerber</span>
-                </a>
-
-                <div class="menu-subheader">Verwaltung</div>
-
-                <a mat-list-item routerLink="/departments" routerLinkActive="active-link">
-                    <mat-icon matListItemIcon>domain</mat-icon>
-                    <span matListItemTitle>Abteilungen</span>
-                </a>
+                <div class="menu-spacer"></div>
+                <mat-divider />
 
                 <a mat-list-item routerLink="/settings" routerLinkActive="active-link">
                     <mat-icon matListItemIcon>settings</mat-icon>
                     <span matListItemTitle>Einstellungen</span>
                 </a>
-
-                <div class="menu-spacer"></div>
-                <mat-divider />
 
                 <a mat-list-item (click)="logout()" class="logout-item">
                     <mat-icon matListItemIcon>logout</mat-icon>

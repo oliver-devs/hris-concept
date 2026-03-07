@@ -8,18 +8,18 @@ body {
     margin: 0;
     height: 100%;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
-    background-color: #f5f7fa;
 }
 
 .sidenav-container {
     height: 100dvh;
+    background-color: transparent;
 }
 
 .sidenav {
     width: 280px;
-    background: white;
+    background-color: var(--mat-sys-surface);
     border-right: none;
-    box-shadow: 4px 0 24px rgb(0 0 0 / 6%);
+    box-shadow: 4px 0 24px rgb(0 0 0 / 8%);
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
@@ -43,34 +43,131 @@ body {
 }
 
 .sidenav:hover ::ng-deep .mat-drawer-inner-container {
-    scrollbar-color: rgb(0 0 0 / 20%) transparent;
+    scrollbar-color: var(--mat-sys-outline-variant) transparent;
 
     &::-webkit-scrollbar-thumb {
-        background-color: rgb(0 0 0 / 20%);
+        background-color: var(--mat-sys-outline-variant);
 
         &:hover {
-            background-color: rgb(0 0 0 / 40%);
+            background-color: var(--mat-sys-outline);
         }
     }
 }
 
 .sidenav-header {
-    height: 64px;
-    flex-shrink: 0;
     display: flex;
-    align-items: center;
-    padding-inline-start: 24px;
-    background: white;
-    color: #333;
-    font-weight: 500;
-    font-size: 20px;
-    letter-spacing: 0.5px;
-    border-block-end: 1px solid #f0f0f0;
+    flex-direction: column;
+    padding: 32px 20px 24px;
+    background-color: var(--mat-sys-surface);
+    border-block-end: 1px solid var(--mat-sys-outline-variant);
+    flex-shrink: 0;
+    gap: 24px;
 }
 
-.sidenav-logo {
-    margin-inline-end: 12px;
-    color: #1565c0;
+.branding-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-inline: 8px;
+}
+
+.company-logo-small {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.branding-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+}
+
+.company-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--mat-sys-on-surface);
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.software-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.software-logo {
+    color: var(--mat-sys-primary);
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.software-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--mat-sys-on-surface-variant);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--mat-sys-surface-container-low);
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    transition: background-color 0.2s ease;
+}
+
+.user-section:hover {
+    background-color: var(--mat-sys-surface-container);
+}
+
+.user-avatar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+    border-radius: 50%;
+}
+
+.user-avatar {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--mat-sys-on-surface);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-role {
+    font-size: 12px;
+    color: var(--mat-sys-on-surface-variant);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nav-list {
@@ -81,34 +178,40 @@ body {
     width: 100%;
     box-sizing: border-box;
 
-    a[mat-list-item] {
+    [mat-list-item] {
         margin: 4px 12px;
         border-radius: 8px;
         height: 48px;
-        color: #5f6368;
+        color: var(--mat-sys-on-surface-variant);
         transition: all 0.2s ease;
         box-sizing: border-box;
-        width: auto;
+        width: calc(100% - 24px);
+        background: transparent;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 1rem;
 
         &:hover {
-            background-color: #f5f5f5;
-            color: #202124;
+            background-color: var(--mat-sys-surface-container-high);
+            color: var(--mat-sys-on-surface);
         }
     }
 }
 
 .active-link {
-    background-color: #e3f2fd !important;
-    color: #1565c0 !important;
+    background-color: var(--mat-sys-secondary-container) !important;
+    color: var(--mat-sys-on-secondary-container) !important;
     font-weight: 500;
 
     mat-icon {
-        color: #1565c0 !important;
+        color: var(--mat-sys-on-secondary-container) !important;
     }
 }
 
 .menu-subheader {
-    color: #9aa0a6;
+    color: var(--mat-sys-on-surface-variant);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 1.2px;
@@ -118,7 +221,7 @@ body {
 
 mat-divider {
     margin: 8px 24px !important;
-    border-top-color: #f0f0f0;
+    border-top-color: var(--mat-sys-outline-variant);
 }
 
 .menu-spacer {
@@ -127,20 +230,26 @@ mat-divider {
 
 .logout-item {
     margin-block-end: 20px !important;
-    color: #d32f2f !important;
+    color: var(--mat-sys-error) !important;
     cursor: pointer;
 
     &:hover {
-        background-color: #ffebee !important;
+        background-color: var(--mat-sys-error-container) !important;
+        color: var(--mat-sys-on-error-container) !important;
+        
+        mat-icon {
+            color: var(--mat-sys-on-error-container) !important;
+        }
     }
 
     mat-icon {
-        color: #d32f2f !important;
+        color: var(--mat-sys-error) !important;
+        transition: color 0.2s ease;
     }
 }
 
 .main-content {
-    background-color: #f5f7fa;
+    background-color: var(--mat-sys-surface-container-low);
     padding: 0;
 }
 

@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { CompanyService } from '../shared/company.service';
 
 @Component({
     selector: 'app-login',
@@ -26,10 +27,12 @@ export class LoginComponent {
     private readonly auth = inject(AuthService);
     private readonly router = inject(Router);
     private readonly snackBar = inject(MatSnackBar);
+    readonly companyService = inject(CompanyService);
 
     username = '';
     password = '';
     readonly isLoading = signal(false);
+    readonly currentYear = new Date().getFullYear();
 
     onLogin() {
         if (this.isLoading()) return;

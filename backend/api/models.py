@@ -1,23 +1,5 @@
-from django.contrib.auth.models import Group
+from django.conf import settings
 from django.db import models
-
-
-class Position(models.Model):
-    title = models.CharField(max_length=100, unique=True)
-    description = models.TextField(blank=True, default="")
-    group = models.ForeignKey(
-        Group, on_delete=models.PROTECT, null=True, blank=True, related_name="positions"
-    )
-    can_approve = models.BooleanField(default=False)
-    requires_dual_approval = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ["title"]
-        verbose_name = "Position"
-        verbose_name_plural = "Positionen"
-
-    def __str__(self) -> str:
-        return self.title
 
 
 class Department(models.Model):
@@ -33,7 +15,33 @@ class Department(models.Model):
         return self.name
 
 
+class Position(models.Model):
+    department = models.ForeignKey(
+        Department, on_delete=models.CASCADE, related_name="positions",
+    )
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, default="")
+    is_management = models.BooleanField(default=False)
+    can_approve = models.BooleanField(default=False)
+    requires_dual_approval = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["title"]
+        constraints = [
+            models.UniqueConstraint(fields=["department", "title"], name="unique_position_per_department"),
+        ]
+        verbose_name = "Position"
+        verbose_name_plural = "Positionen"
+
+    def __str__(self) -> str:
+        return f"{self.title} ({self.department})"
+
+
 class Employee(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+        null=True, blank=True, related_name="employee",
+    )
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -43,7 +51,6 @@ class Employee(models.Model):
     position = models.ForeignKey(
         Position, on_delete=models.SET_NULL, null=True, blank=True, related_name="employees"
     )
-    is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

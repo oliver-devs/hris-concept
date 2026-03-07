@@ -1,10 +1,13 @@
 <section class="settings-container">
-    <header class="header">
-        <h1>Einstellungen</h1>
-        <p>Verwalte hier das System und dein Profil.</p>
+    <header class="page-header">
+        <div class="header-content">
+            <h1>Einstellungen</h1>
+            <p>Verwalte hier das System und dein Profil.</p>
+        </div>
     </header>
 
-    <mat-tab-group animationDuration="0ms" class="settings-tabs">
+    <mat-tab-group animationDuration="0ms" class="settings-tabs" color="primary">
+        @if (auth.isManagement()) {
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">domain</mat-icon>
@@ -12,62 +15,84 @@
             </ng-template>
 
             <div class="tab-content">
-                <mat-card class="settings-card">
-                    <div class="card-header-flex">
-                        <div class="title-group">
-                            <mat-card-title>Allgemeine Daten</mat-card-title>
-                            <mat-card-subtitle>
-                                Globale Einstellungen für das HR-System
-                            </mat-card-subtitle>
-                        </div>
-                    </div>
-                    <mat-card-content>
-                        <div class="company-form">
-                            <mat-form-field appearance="outline" class="full-width">
-                                <mat-label>Unternehmensname</mat-label>
-                                <input
-                                    matInput
-                                    [(ngModel)]="companyData.name"
-                                    placeholder="z.B. Muster GmbH"
-                                />
-                                <mat-icon matPrefix class="field-icon">business</mat-icon>
-                            </mat-form-field>
-
-                            <div class="form-row">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Standard-Urlaubstage</mat-label>
-                                    <input
-                                        matInput
-                                        type="number"
-                                        [(ngModel)]="companyData.vacationDays"
-                                    />
-                                    <mat-icon matPrefix class="field-icon">flight_takeoff</mat-icon>
-                                    <span matTextSuffix>Tage</span>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Wöchentliche Arbeitszeit</mat-label>
-                                    <input
-                                        matInput
-                                        type="number"
-                                        [(ngModel)]="companyData.workingHours"
-                                    />
-                                    <mat-icon matPrefix class="field-icon">schedule</mat-icon>
-                                    <span matTextSuffix>Stunden</span>
-                                </mat-form-field>
+                <div class="settings-grid">
+                    <mat-card class="settings-card">
+                        <div class="card-header-flex">
+                            <div class="title-group">
+                                <mat-card-title>Allgemeine Daten</mat-card-title>
+                                <mat-card-subtitle>
+                                    Globale Einstellungen für das HR-System
+                                </mat-card-subtitle>
                             </div>
-
-                            <button
-                                mat-flat-button
-                                color="primary"
-                                class="save-btn"
-                                (click)="saveCompanyData()"
-                            >
-                                <mat-icon>save</mat-icon> Unternehmensdaten speichern
-                            </button>
                         </div>
-                    </mat-card-content>
-                </mat-card>
+                        <mat-card-content>
+                            <div class="company-form">
+                                <div class="form-row">
+                                    <mat-form-field appearance="outline" class="half-width">
+                                        <mat-label>Unternehmensname</mat-label>
+                                        <input
+                                            matInput
+                                            [(ngModel)]="companyData.name"
+                                            placeholder="z.B. Muster GmbH"
+                                        />
+                                        <mat-icon matPrefix class="field-icon">business</mat-icon>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="half-width">
+                                        <mat-label>Name der Software</mat-label>
+                                        <input
+                                            matInput
+                                            [(ngModel)]="companyData.softwareName"
+                                            placeholder="z.B. ClockIn"
+                                        />
+                                        <mat-icon matPrefix class="field-icon">admin_panel_settings</mat-icon>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="form-row">
+                                    <mat-form-field appearance="outline" class="half-width">
+                                        <mat-label>Standard-Urlaubstage</mat-label>
+                                        <input
+                                            matInput
+                                            type="number"
+                                            [(ngModel)]="companyData.vacationDays"
+                                        />
+                                        <mat-icon matPrefix class="field-icon">flight_takeoff</mat-icon>
+                                        <span matTextSuffix>Tage</span>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="half-width">
+                                        <mat-label>Wöchentliche Arbeitszeit</mat-label>
+                                        <input
+                                            matInput
+                                            type="number"
+                                            [(ngModel)]="companyData.workingHours"
+                                        />
+                                        <mat-icon matPrefix class="field-icon">schedule</mat-icon>
+                                        <span matTextSuffix>Stunden</span>
+                                    </mat-form-field>
+                                </div>
+
+                                <button
+                                    mat-flat-button
+                                    color="primary"
+                                    class="save-btn"
+                                    (click)="saveCompanyData()"
+                                >
+                                    <mat-icon>save</mat-icon> Unternehmensdaten speichern
+                                </button>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                    
+                    <mat-card class="settings-card info-card">
+                        <mat-card-content class="info-content">
+                            <mat-icon class="info-icon">info</mat-icon>
+                            <h3>Unternehmensdaten</h3>
+                            <p>Diese Daten werden global für alle Mitarbeiter angewendet. Das Branding der App (Namen) ändert sich dynamisch nach dem Speichern.</p>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
             </div>
         </mat-tab>
 
@@ -78,124 +103,328 @@
             </ng-template>
 
             <div class="tab-content">
-                <mat-card class="settings-card">
-                    <div class="card-header-flex">
-                        <div class="title-group">
-                            <mat-card-title>Positionen & Rollen</mat-card-title>
-                            <mat-card-subtitle>
-                                Verwalte die Auswahllisten für Mitarbeiter
-                            </mat-card-subtitle>
-                        </div>
+                <div class="settings-grid">
+                    <div class="master-data-container">
+                        @if (availableLetters().length > 0) {
+                            <div class="alphabet-filter-bar">
+                                <button mat-button class="filter-reset-btn" 
+                                    [class.active]="!selectedLetter()" 
+                                    (click)="selectedLetter.set(null)">
+                                    Alle
+                                </button>
+                                @for (letter of availableLetters(); track letter) {
+                                    <button mat-button class="letter-filter-btn" 
+                                        [class.active]="selectedLetter() === letter" 
+                                        (click)="toggleLetter(letter)">
+                                        {{ letter }}
+                                    </button>
+                                }
+                            </div>
+                        }
 
-                        <button
-                            mat-flat-button
-                            color="primary"
-                            class="addBtn"
-                            (click)="openPositionForm()"
-                        >
-                            <mat-icon>add</mat-icon> Neue Position
-                        </button>
+                        @if (selectedDepartment(); as dept) {
+                            <!-- Positionen einer Abteilung -->
+                            <div class="master-data-header">
+                                <div class="header-titles">
+                                    <button mat-button (click)="backToDepartments()" class="back-btn">
+                                        <mat-icon>arrow_back</mat-icon> Abteilungen
+                                    </button>
+                                    <span class="drilldown-title">{{ dept.name }} — Positionen</span>
+                                </div>
+                                <button
+                                    mat-flat-button
+                                    color="primary"
+                                    (click)="openPositionForm()"
+                                    class="pill-btn"
+                                >
+                                    <mat-icon>add</mat-icon> Neue Position
+                                </button>
+                            </div>
+
+                            <mat-card class="settings-card full-width-card">
+                                <mat-card-content>
+                                    <mat-list class="master-data-list">
+                                        @for (pos of filteredPositions(); track pos.id) {
+                                            <mat-list-item>
+                                                <mat-icon matListItemIcon class="list-icon">
+                                                    work_outline
+                                                </mat-icon>
+
+                                                <span matListItemTitle>{{ pos.title }}</span>
+                                                <span matListItemLine class="list-subtitle">
+                                                    {{ pos.employee_count || 0 }} Mitarbeiter
+                                                    @if (pos.is_management || pos.can_approve) {
+                                                        ·
+                                                        @if (pos.is_management) {
+                                                            <span class="badge-inline mgmt">Verwaltung</span>
+                                                        }
+                                                        @if (pos.can_approve) {
+                                                            <span class="badge-inline approve">Genehmiger</span>
+                                                        }
+                                                    }
+                                                </span>
+
+                                                <div matListItemMeta class="action-buttons">
+                                                    <button
+                                                        mat-icon-button
+                                                        color="primary"
+                                                        (click)="openPositionForm(pos)"
+                                                    >
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+
+                                                    <button
+                                                        mat-icon-button
+                                                        color="warn"
+                                                        (click)="removePosition(pos)"
+                                                        [disabled]="(pos.employee_count || 0) > 0"
+                                                        [matTooltip]="
+                                                            (pos.employee_count || 0) > 0
+                                                                ? 'Hat noch Mitarbeiter'
+                                                                : ''
+                                                        "
+                                                    >
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </mat-list-item>
+                                        } @empty {
+                                            <p class="placeholder-text padded">
+                                                Keine Positionen gefunden.
+                                            </p>
+                                        }
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+                        } @else {
+                            <!-- Abteilungen -->
+                            <div class="master-data-header">
+                                <span class="drilldown-title">Abteilungen</span>
+                                <button
+                                    mat-flat-button
+                                    color="primary"
+                                    (click)="openDepartmentForm()"
+                                    class="pill-btn"
+                                >
+                                    <mat-icon>add</mat-icon> Neue Abteilung
+                                </button>
+                            </div>
+
+                            <mat-card class="settings-card full-width-card">
+                                <mat-card-content>
+                                    <mat-list class="master-data-list">
+                                        @for (dept of filteredDepartments(); track dept.id) {
+                                            <mat-list-item class="clickable-item" (click)="selectDepartment(dept)">
+                                                <mat-icon matListItemIcon class="list-icon">
+                                                    domain
+                                                </mat-icon>
+
+                                                <span matListItemTitle>{{ dept.name }}</span>
+                                                <span matListItemLine class="list-subtitle">
+                                                    {{ dept.employee_count || 0 }} Mitarbeiter · {{ dept.position_count || 0 }} Positionen
+                                                </span>
+
+                                                <div matListItemMeta class="action-buttons">
+                                                    <button
+                                                        mat-icon-button
+                                                        color="primary"
+                                                        (click)="openDepartmentForm(dept); $event.stopPropagation()"
+                                                    >
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+
+                                                    <button
+                                                        mat-icon-button
+                                                        color="warn"
+                                                        (click)="removeDepartment(dept); $event.stopPropagation()"
+                                                        [disabled]="(dept.employee_count || 0) > 0"
+                                                        [matTooltip]="
+                                                            (dept.employee_count || 0) > 0
+                                                                ? 'Hat noch Mitarbeiter'
+                                                                : ''
+                                                        "
+                                                    >
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+
+                                                    <mat-icon class="chevron-icon">chevron_right</mat-icon>
+                                                </div>
+                                            </mat-list-item>
+                                        } @empty {
+                                            <p class="placeholder-text padded">
+                                                Keine Abteilungen gefunden.
+                                            </p>
+                                        }
+                                    </mat-list>
+                                </mat-card-content>
+                            </mat-card>
+                        }
                     </div>
 
-                    <mat-card-content>
-                        <mat-list class="position-list">
-                            @for (pos of positions(); track pos.id) {
-                                <mat-list-item>
-                                    <mat-icon matListItemIcon class="position-icon">
-                                        work_outline
-                                    </mat-icon>
-
-                                    <span matListItemTitle>{{ pos.title }}</span>
-
-                                    <div matListItemMeta class="action-buttons">
-                                        <button
-                                            mat-icon-button
-                                            color="primary"
-                                            (click)="openPositionForm(pos)"
-                                        >
-                                            <mat-icon>edit</mat-icon>
-                                        </button>
-
-                                        <button
-                                            mat-icon-button
-                                            color="warn"
-                                            (click)="removePosition(pos)"
-                                        >
-                                            <mat-icon>delete</mat-icon>
-                                        </button>
-                                    </div>
-                                </mat-list-item>
-                            } @empty {
-                                <p class="placeholder-text padded">
-                                    Keine Positionen gefunden.
-                                </p>
-                            }
-                        </mat-list>
-                    </mat-card-content>
-                </mat-card>
+                    <mat-card class="settings-card info-card">
+                        <mat-card-content class="info-content">
+                            <mat-icon class="info-icon">account_tree</mat-icon>
+                            <h3>Unternehmensstruktur</h3>
+                            <p>Lege hier die Abteilungen deines Unternehmens an. Klicke auf eine Abteilung, um die dazugehörigen Positionen (wie z.B. "Entwickler" oder "Teamleiter") zu verwalten.</p>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
             </div>
         </mat-tab>
+        }
 
         <mat-tab>
             <ng-template mat-tab-label>
                 <mat-icon class="tab-icon">person</mat-icon>
-                Mein Profil
+                Persönlich
             </ng-template>
 
             <div class="tab-content">
-                <mat-card class="settings-card">
-                    <div class="card-header-flex">
-                        <div class="title-group">
-                            <mat-card-title>Sicherheit</mat-card-title>
-                            <mat-card-subtitle>Passwort und Zugangsdaten ändern</mat-card-subtitle>
-                        </div>
+                <div class="master-data-header">
+                    <mat-button-toggle-group
+                        [value]="personalView()"
+                        (change)="personalView.set($event.value)"
+                        class="master-data-toggle view-toggle"
+                    >
+                        <mat-button-toggle value="profile">
+                            <mat-icon>lock</mat-icon>
+                            Mein Profil
+                        </mat-button-toggle>
+                        <mat-button-toggle value="appearance">
+                            <mat-icon>palette</mat-icon>
+                            Darstellung
+                        </mat-button-toggle>
+                    </mat-button-toggle-group>
+                </div>
+
+                @if (personalView() === 'profile') {
+                    <div class="settings-grid">
+                        <mat-card class="settings-card">
+                            <div class="card-header-flex">
+                                <div class="title-group">
+                                    <mat-card-title>Sicherheit</mat-card-title>
+                                    <mat-card-subtitle>
+                                        Passwort und Zugangsdaten ändern
+                                    </mat-card-subtitle>
+                                </div>
+                            </div>
+
+                            <mat-card-content>
+                                <div class="password-form">
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Aktuelles Passwort</mat-label>
+                                        <input
+                                            matInput
+                                            type="password"
+                                            [(ngModel)]="passwordData.old_password"
+                                        />
+                                        <mat-icon matPrefix class="field-icon">vpn_key</mat-icon>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Neues Passwort</mat-label>
+                                        <input
+                                            matInput
+                                            type="password"
+                                            [(ngModel)]="passwordData.new_password"
+                                        />
+                                        <mat-icon matPrefix class="field-icon">lock</mat-icon>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="full-width">
+                                        <mat-label>Neues Passwort bestätigen</mat-label>
+                                        <input
+                                            matInput
+                                            type="password"
+                                            [(ngModel)]="passwordData.confirm_password"
+                                        />
+                                        <mat-icon matPrefix class="field-icon">lock</mat-icon>
+                                    </mat-form-field>
+
+                                    <button
+                                        mat-flat-button
+                                        color="primary"
+                                        class="save-btn"
+                                        [disabled]="
+                                            !passwordData.old_password ||
+                                            !passwordData.new_password ||
+                                            !passwordData.confirm_password
+                                        "
+                                        (click)="changePassword()"
+                                    >
+                                        <mat-icon>save</mat-icon> Passwort speichern
+                                    </button>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+
+                        <mat-card class="settings-card info-card">
+                            <mat-card-content class="info-content">
+                                <mat-icon class="info-icon">security</mat-icon>
+                                <h3>Passwortrichtlinien</h3>
+                                <p>Bitte wähle ein sicheres Passwort mit mindestens 8 Zeichen, das Groß- und Kleinbuchstaben sowie Zahlen enthält.</p>
+                            </mat-card-content>
+                        </mat-card>
                     </div>
+                } @else {
+                    <div class="settings-grid">
+                        <mat-card class="settings-card">
+                            <div class="card-header-flex">
+                                <div class="title-group">
+                                    <mat-card-title>Erscheinungsbild</mat-card-title>
+                                    <mat-card-subtitle>
+                                        Wähle zwischen hellem und dunklem Modus
+                                    </mat-card-subtitle>
+                                </div>
+                            </div>
+                            <mat-card-content>
+                                <div class="mode-picker">
+                                    @for (opt of modeOptions; track opt.value) {
+                                        <button
+                                            class="mode-option"
+                                            [class.active]="themeService.mode() === opt.value"
+                                            (click)="themeService.setMode(opt.value)"
+                                        >
+                                            <mat-icon>{{ opt.icon }}</mat-icon>
+                                            <span>{{ opt.label }}</span>
+                                        </button>
+                                    }
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
 
-                    <mat-card-content>
-                        <div class="password-form">
-                            <mat-form-field appearance="outline">
-                                <mat-label>Aktuelles Passwort</mat-label>
-                                <input
-                                    matInput
-                                    type="password"
-                                    [(ngModel)]="passwordData.old_password"
-                                />
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline">
-                                <mat-label>Neues Passwort</mat-label>
-                                <input
-                                    matInput
-                                    type="password"
-                                    [(ngModel)]="passwordData.new_password"
-                                />
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline">
-                                <mat-label>Neues Passwort bestätigen</mat-label>
-                                <input
-                                    matInput
-                                    type="password"
-                                    [(ngModel)]="passwordData.confirm_password"
-                                />
-                            </mat-form-field>
-
-                            <button
-                                mat-flat-button
-                                color="primary"
-                                class="save-pw-btn"
-                                [disabled]="
-                                    !passwordData.old_password ||
-                                    !passwordData.new_password ||
-                                    !passwordData.confirm_password
-                                "
-                                (click)="changePassword()"
-                            >
-                                <mat-icon>save</mat-icon> Passwort speichern
-                            </button>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
+                        <mat-card class="settings-card">
+                            <div class="card-header-flex">
+                                <div class="title-group">
+                                    <mat-card-title>Farbthema</mat-card-title>
+                                    <mat-card-subtitle>
+                                        Wähle ein Farbschema für die Oberfläche
+                                    </mat-card-subtitle>
+                                </div>
+                            </div>
+                            <mat-card-content>
+                                <div class="color-picker">
+                                    @for (theme of colorThemes; track theme.id) {
+                                        <button
+                                            class="color-swatch"
+                                            [style.--swatch-color]="theme.preview"
+                                            [class.active]="themeService.colorTheme() === theme.id"
+                                            (click)="themeService.setColor(theme.id)"
+                                            [attr.aria-label]="theme.label"
+                                        >
+                                            <span class="swatch-circle">
+                                                @if (themeService.colorTheme() === theme.id) {
+                                                    <mat-icon class="swatch-check">check</mat-icon>
+                                                }
+                                            </span>
+                                            <span class="swatch-label">{{ theme.label }}</span>
+                                        </button>
+                                    }
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                }
             </div>
         </mat-tab>
     </mat-tab-group>

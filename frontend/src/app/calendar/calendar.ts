@@ -1,11 +1,13 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from '../shared/employee.service';
 import { AbsenceService } from '../shared/absence.service';
 import { Absence } from '../shared/models';
@@ -47,18 +49,28 @@ const MONTH_NAMES = [
 
 @Component({
     selector: 'app-calendar',
-    imports: [MatCardModule, MatButtonModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule],
+    imports: [
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatProgressSpinnerModule,
+        MatButtonToggleModule,
+    ],
     templateUrl: './calendar.html',
     styleUrl: './calendar.css',
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit {
     private readonly employeeService = inject(EmployeeService);
     private readonly absenceService = inject(AbsenceService);
     private readonly authService = inject(AuthService);
     private readonly dialog = inject(MatDialog);
+    private readonly route = inject(ActivatedRoute);
+    private readonly router = inject(Router);
 
     readonly currentMonth = signal(new Date().getMonth());
     readonly currentYear = signal(new Date().getFullYear());
+    readonly currentView = signal<'calendar' | 'list' | 'approvals'>('calendar');
 
     private readonly absenceResource = rxResource({
         stream: () => this.absenceService.getAbsences(),
@@ -68,17 +80,32 @@ export class CalendarComponent {
         stream: () => this.employeeService.getEmployees(),
     });
 
-    private readonly userResource = rxResource({
-        stream: () => this.authService.getCurrentUser(),
-    });
-
     readonly absences = computed(() => this.absenceResource.value() ?? []);
     readonly employees = computed(() => this.employeeResource.value() ?? []);
-    readonly canApprove = computed(() => this.userResource.value()?.can_approve ?? false);
+    readonly canApprove = this.authService.canApprove;
     readonly pendingCount = computed(() => this.absences().filter((a) => a.status === 'pending').length);
 
     readonly isLoading = computed(() => this.absenceResource.isLoading() || this.employeeResource.isLoading());
     readonly hasError = computed(() => this.absenceResource.error() || this.employeeResource.error());
+
+    readonly pendingAbsencesList = computed(() => {
+        return this.absences()
+            .filter((a) => a.status === 'pending')
+            .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime());
+    });
+
+    readonly myAbsences = computed(() => {
+        const myEmail = this.authService.currentUser()?.email;
+        if (!myEmail) return [];
+        
+        // Find my employee ID based on email
+        const me = this.employees().find(e => e.email === myEmail);
+        if (!me) return [];
+
+        return this.absences().filter(a => a.employee === me.id).sort((a, b) => {
+            return new Date(b.start_date).getTime() - new Date(a.start_date).getTime();
+        });
+    });
 
     readonly weekdays = WEEKDAYS;
     readonly typeLegend = Object.entries(TYPE_COLORS).map(([type, { bg, label }]) => ({
@@ -162,6 +189,24 @@ export class CalendarComponent {
         return map;
     });
 
+    ngOnInit() {
+        this.route.queryParams.subscribe(params => {
+            const view = params['view'];
+            if (view === 'list' || view === 'approvals' || view === 'calendar') {
+                this.currentView.set(view);
+            }
+        });
+    }
+
+    setView(view: 'calendar' | 'list' | 'approvals') {
+        this.currentView.set(view);
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { view },
+            queryParamsHandling: 'merge',
+        });
+    }
+
     prevMonth() {
         if (this.currentMonth() === 0) {
             this.currentMonth.set(11);
@@ -211,7 +256,7 @@ export class CalendarComponent {
             absence,
             employees: this.employees(),
             canApprove: this.canApprove(),
-            currentUserEmail: this.userResource.value()?.email,
+            currentUserEmail: this.authService.currentUser()?.email,
         };
 
         this.dialog

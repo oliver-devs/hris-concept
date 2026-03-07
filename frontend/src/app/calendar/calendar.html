@@ -1,43 +1,41 @@
 <section class="calendar-container">
-    <header class="calendar-header">
-        <div class="nav-group">
-            <button mat-icon-button (click)="prevMonth()">
-                <mat-icon>chevron_left</mat-icon>
-            </button>
-            <h2>{{ monthName() }} {{ currentYear() }}</h2>
-            <button mat-icon-button (click)="nextMonth()">
-                <mat-icon>chevron_right</mat-icon>
-            </button>
-            <button mat-button (click)="goToToday()">Heute</button>
-
-            @if (canApprove() && pendingCount() > 0) {
-                <span class="pending-badge">
-                    {{ pendingCount() }} ausstehend
-                </span>
-            }
+    <header class="page-header">
+        <div class="header-content">
+            <h1>Abwesenheiten</h1>
+            <p>Verwalte Urlaub, Krankheit und Homeoffice.</p>
         </div>
 
-        <div class="legend">
-            @for (entry of typeLegend; track entry.type) {
-                <div class="legend-item">
-                    <span class="legend-dot" [style.background-color]="entry.color"></span>
-                    {{ entry.label }}
-                </div>
-            }
-            <span class="legend-separator"></span>
-            @for (entry of statusLegend; track entry.status) {
-                <div class="legend-item">
-                    <span class="legend-dot" [attr.data-status]="entry.status"></span>
-                    {{ entry.label }}
-                </div>
-            }
-        </div>
-
-        <button mat-flat-button color="primary" (click)="openForm()">
+        <button mat-flat-button color="primary" class="add-btn" (click)="openForm()">
             <mat-icon>add</mat-icon>
             Neue Abwesenheit
         </button>
     </header>
+
+    <div class="controls-bar">
+        <mat-button-toggle-group 
+            class="view-toggle" 
+            [value]="currentView()" 
+            (change)="setView($event.value)"
+        >
+            <mat-button-toggle value="calendar">
+                <mat-icon>calendar_month</mat-icon>
+                Team-Kalender
+            </mat-button-toggle>
+            <mat-button-toggle value="list">
+                <mat-icon>format_list_bulleted</mat-icon>
+                Meine Anträge
+            </mat-button-toggle>
+            @if (canApprove()) {
+                <mat-button-toggle value="approvals">
+                    <mat-icon>pending_actions</mat-icon>
+                    Freigaben
+                    @if (pendingCount() > 0) {
+                        <span class="badge-count">{{ pendingCount() }}</span>
+                    }
+                </mat-button-toggle>
+            }
+        </mat-button-toggle-group>
+    </div>
 
     @if (hasError()) {
         <div class="error-banner">
@@ -52,39 +50,161 @@
             <mat-spinner diameter="40" />
         </div>
     } @else {
-        <mat-card class="calendar-card">
-            <div class="calendar-grid">
-                <div class="kw-header">KW</div>
-                @for (day of weekdays; track day) {
-                    <div class="weekday-header">{{ day }}</div>
-                }
+        @if (currentView() === 'calendar') {
+            <mat-card class="calendar-card">
+                <header class="calendar-header">
+                    <div class="nav-group">
+                        <button mat-icon-button (click)="prevMonth()">
+                            <mat-icon>chevron_left</mat-icon>
+                        </button>
+                        <h2>{{ monthName() }} {{ currentYear() }}</h2>
+                        <button mat-icon-button (click)="nextMonth()">
+                            <mat-icon>chevron_right</mat-icon>
+                        </button>
+                        <button mat-button (click)="goToToday()">Heute</button>     
 
-                @for (week of calendarWeeks(); track week.kw + '-' + $index) {
-                    <div class="kw-cell">{{ week.kw }}</div>
-                    @for (day of week.days; track day.date.toISOString()) {
-                        <div
-                            class="day-cell"
-                            [class.other-month]="!day.isCurrentMonth"
-                            [class.today]="day.isToday"
-                        >
-                            <span class="day-number">{{ day.dayOfMonth }}</span>
-                            <div class="absence-bars">
-                                @for (abs of getAbsencesForDay(day.date); track abs.id) {
-                                    <div
-                                        class="absence-bar"
-                                        [attr.data-status]="abs.status"
-                                        [style.background-color]="getColor(abs.absence_type)"
-                                        [matTooltip]="getTooltip(abs)"
-                                        (click)="openForm(abs); $event.stopPropagation()"
-                                    >
-                                        {{ (abs.employee_name ?? '').split(' ')[0] }}
-                                    </div>
-                                }
+                        @if (canApprove() && pendingCount() > 0) {
+                            <span class="pending-badge clickable" (click)="setView('approvals')">
+                                {{ pendingCount() }} ausstehend
+                            </span>
+                        }
+                    </div>
+
+                    <div class="legend">
+                        @for (entry of typeLegend; track entry.type) {
+                            <div class="legend-item">
+                                <span class="legend-dot" [style.background-color]="entry.color"></span>
+                                {{ entry.label }}
                             </div>
-                        </div>
+                        }
+                        <span class="legend-separator"></span>
+                        @for (entry of statusLegend; track entry.status) {
+                            <div class="legend-item">
+                                <span class="legend-dot" [attr.data-status]="entry.status"></span>
+                                {{ entry.label }}
+                            </div>
+                        }
+                    </div>
+                </header>
+
+                <div class="calendar-grid">
+                    <div class="kw-header">KW</div>
+                    @for (day of weekdays; track day) {
+                        <div class="weekday-header">{{ day }}</div>
                     }
-                }
+
+                    @for (week of calendarWeeks(); track week.kw + '-' + $index) {  
+                        <div class="kw-cell">{{ week.kw }}</div>
+                        @for (day of week.days; track day.date.toISOString()) {     
+                            <div
+                                class="day-cell"
+                                [class.other-month]="!day.isCurrentMonth"
+                                [class.today]="day.isToday"
+                            >
+                                <span class="day-number">{{ day.dayOfMonth }}</span>
+                                <div class="absence-bars">
+                                    @for (abs of getAbsencesForDay(day.date); track abs.id) {
+                                        <div
+                                            class="absence-bar"
+                                            [attr.data-status]="abs.status"
+                                            [style.background-color]="getColor(abs.absence_type)"
+                                            [matTooltip]="getTooltip(abs)"
+                                            (click)="openForm(abs); $event.stopPropagation()"
+                                        >
+                                            {{ (abs.employee_name ?? '').split(' ')[0] }}
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </mat-card>
+        } @else if (currentView() === 'list') {
+            <div class="list-grid">
+                <mat-card class="list-card">
+                    <div class="list-content">
+                        <h3 class="list-title">Meine Abwesenheiten</h3>
+                        <div class="absence-list">
+                            @for (abs of myAbsences(); track abs.id) {
+                                <div class="absence-list-item" (click)="openForm(abs)">
+                                    <div class="abs-icon-container" [style.color]="getColor(abs.absence_type)">
+                                        @switch (abs.absence_type) {
+                                            @case ('vacation') { <mat-icon>beach_access</mat-icon> }
+                                            @case ('sick') { <mat-icon>local_hospital</mat-icon> }
+                                            @case ('homeoffice') { <mat-icon>home</mat-icon> }
+                                            @default { <mat-icon>event_busy</mat-icon> }
+                                        }
+                                    </div>
+                                    <div class="abs-details">
+                                        <div class="abs-type">{{ getLabel(abs.absence_type) }}</div>
+                                        <div class="abs-dates">{{ abs.start_date }} bis {{ abs.end_date }}</div>
+                                    </div>
+                                    <div class="abs-status">
+                                        <span class="status-badge" [attr.data-status]="abs.status">
+                                            {{ getStatusLabel(abs.status) }}        
+                                        </span>
+                                    </div>
+                                </div>
+                            } @empty {
+                                <div class="no-data">
+                                    Du hast noch keine Abwesenheiten eingetragen.   
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </mat-card>
+
+                <div class="info-sidebar">
+                    <mat-card class="info-card">
+                        <mat-card-content class="info-content">
+                            <mat-icon class="info-icon">help_outline</mat-icon>     
+                            <h3>Antragsstatus & Freigaben</h3>
+                            <p>Deine Anträge werden je nach Abteilung von zuständigen Genehmigern geprüft. Ausstehende Anträge kannst du jederzeit bearbeiten oder zurückziehen. Genehmigte Anträge sind im Kalender für das gesamte Team sichtbar.</p>       
+                        </mat-card-content>
+                    </mat-card>
+                </div>
             </div>
-        </mat-card>
+        } @else {
+            <div class="list-grid">
+                <mat-card class="list-card">
+                    <div class="list-content">
+                        <h3 class="list-title">Ausstehende Freigaben</h3>
+                        <div class="absence-list">
+                            @for (abs of pendingAbsencesList(); track abs.id) {
+                                <div class="absence-list-item" (click)="openForm(abs)">
+                                    <div class="avatar-circle">
+                                        {{ (abs.employee_name || '').charAt(0) }}
+                                    </div>
+                                    <div class="abs-details">
+                                        <div class="abs-type">{{ abs.employee_name }} — {{ getLabel(abs.absence_type) }}</div>
+                                        <div class="abs-dates">{{ abs.start_date }} bis {{ abs.end_date }}</div>
+                                    </div>
+                                    <div class="abs-status">
+                                        <span class="status-badge" data-status="pending">
+                                            Prüfen
+                                        </span>
+                                    </div>
+                                </div>
+                            } @empty {
+                                <div class="no-data">
+                                    Es gibt derzeit keine offenen Anträge zur Freigabe.   
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </mat-card>
+
+                <div class="info-sidebar">
+                    <mat-card class="info-card">
+                        <mat-card-content class="info-content">
+                            <mat-icon class="info-icon">verified</mat-icon>     
+                            <h3>Freigabe-Prozess</h3>
+                            <p>Als Genehmiger kannst du hier Urlaubs-, Krankheits- und Homeoffice-Anträge deiner Mitarbeiter prüfen. Klicke auf einen Eintrag, um Details einzusehen und den Antrag zu genehmigen oder abzulehnen.</p>       
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        }
     }
-</section>
+    </section>
