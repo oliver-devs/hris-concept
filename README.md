@@ -1,38 +1,58 @@
-# Mitarbeiter-Verwaltung
+# ClockIn – HR & Zeiterfassung (UI/UX Concept Study)
 
-Webbasierte Anwendung zur Verwaltung von Mitarbeitern, Abteilungen und Positionen. Gebaut mit Angular und Django REST Framework.
+**ClockIn** (fiktiv entwickelt für die "Nexus Dynamics GmbH") ist eine webbasierte Unternehmens-Software zur Verwaltung von Mitarbeitern, Abwesenheiten und (in Zukunft) Arbeitszeiten. 
 
-## Tech-Stack
+> **💡 Kernfokus dieses Projekts:**
+> Dieses Projekt dient in erster Linie als **UI/UX-Showcase und Konzeptstudie**. Der Schwerpunkt liegt nicht primär auf komplexer Backend-Logik, sondern auf der Frage: *"Wie muss eine moderne, intuitive und enterprise-taugliche Software für Endanwender gestaltet sein?"*
+
+## Design-Philosophie & UX-Entscheidungen
+
+Die gesamte Benutzeroberfläche wurde mit Fokus auf Ergonomie und einem klaren, modernen "Look & Feel" entwickelt.
+
+*   **Soft UI & Flat Design:** Verzicht auf harte Schlagschatten. Stattdessen nutzen wir feine Rahmen, softe Hintergrund-Abstufungen und pastellige Status-Farben ("Pills").
+*   **Grid-Layouts & Info-Karten:** Komplexe Ansichten (wie Einstellungen oder Kalender) nutzen ein geteiltes Raster. Neben Formularen oder Listen stehen "Info-Karten", die dem Nutzer direkt erklären, was hier passiert – ein bewährtes SaaS-Pattern zur Reduzierung von Support-Anfragen.
+*   **Intuitive Navigation (Drill-Down):** Statt tiefer, verschachtelter Menüs wird oft in Listen hinein-navigiert (z.B. Abteilungen -> Positionen).
+*   **Kontext-Wechsel via Toggle:** Klassische, klobige "Tabs" wurden durch moderne Button-Toggles ersetzt, um z.B. zwischen "Team-Kalender" und "Meine Anträge" fließend zu wechseln.
+*   **White-Labeling Ready:** Unternehmensname und App-Name sind dynamisch in den Einstellungen anpassbar und ändern das komplette Branding der Software in Echtzeit (inkl. Login-Screen).
+*   **Alphabetische Filterung:** Lange Stammdaten-Listen wurden mit einer Adressbuch-ähnlichen ABC-Filterleiste für extrem schnelles Auffinden versehen.
+
+## Features (Aktueller Stand)
+
+- **Interaktives Dashboard:** Rollenbasierte Startseite (Mitarbeiter vs. Management) mit anklickbaren KPI-Metriken.
+- **Mitarbeiter-Verwaltung:** Alphabetisch gruppierte, durchsuchbare Listenansicht.
+- **Abwesenheiten (Urlaub, Krank, Homeoffice):** 
+  - Monats-Kalender für das Team.
+  - "Meine Anträge"-Ansicht für den Mitarbeiter.
+  - "Freigaben"-Workflow für Vorgesetzte (Genehmigen / Ablehnen).
+- **Stammdaten-Verwaltung:** Abteilungen und dazugehörige Positionen.
+- **Profil-Einstellungen:** Dynamisches Theming (Hell/Dunkel, Akzentfarben) und Passwort-Verwaltung.
+
+---
+
+## Tech-Stack (Das Fundament)
+
+Auch wenn das Design im Vordergrund steht, ist die technische Basis auf dem neuesten Stand, um eine absolut flüssige Bedienung zu gewährleisten:
 
 **Frontend**
-- Angular 21 (Standalone Components, Signals)
-- Angular Material (UI-Komponenten)
-- TypeScript
+- Angular 21 (Standalone Components, moderne Signals)
+- Angular Material (M3 / Material 3 Design System)
+- Vanilla CSS Grid & Flexbox
 
 **Backend**
 - Django 6 + Django REST Framework
 - Token-basierte Authentifizierung
 - SQLite (Entwicklung)
 
-## Features
+---
 
-- Mitarbeiter anlegen, bearbeiten und löschen
-- Automatische User-Erstellung mit generiertem Passwort bei Neuanlage
-- Freigabe-Workflow (is_approved)
-- Abteilungs- und Positionsverwaltung
-- Passwort-Änderung
-- Suchfunktion mit Echtzeit-Filterung
-- Login mit Token-Authentifizierung
-- Responsive Material Design UI
-
-## Installation
+## Installation & Ausführung
 
 ### Voraussetzungen
 
 - Node.js (>= 20)
 - Python (>= 3.12)
 
-### Backend
+### Backend starten
 
 ```bash
 cd backend
@@ -43,56 +63,13 @@ python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
 ```
-
 Das Backend läuft auf `http://127.0.0.1:8000/`.
 
-### Frontend
+### Frontend starten
 
 ```bash
 cd frontend
 npm install
 npx ng serve
 ```
-
 Das Frontend läuft auf `http://localhost:4200/`.
-
-## Projektstruktur
-
-```
-mitarbeiter_api/
-├── backend/
-│   ├── api/                  # Django App (Models, Views, Serializers)
-│   │   ├── models.py         # Employee, Department, Position
-│   │   ├── views.py          # ViewSets + API-Views
-│   │   ├── serializers.py    # DRF Serializer
-│   │   ├── admin.py          # Admin-Konfiguration
-│   │   └── urls.py           # API-Routen
-│   └── config/               # Django-Konfiguration
-│       ├── settings.py
-│       └── urls.py
-├── frontend/
-│   └── src/
-│       ├── app/
-│       │   ├── auth/         # Login, Guard, Interceptor
-│       │   ├── dashboard/    # Dashboard-Ansicht
-│       │   ├── employee/     # Mitarbeiter CRUD + Service
-│       │   ├── department/   # Abteilungsverwaltung
-│       │   ├── settings/     # Einstellungen + Positionsverwaltung
-│       │   └── shared/       # Dialoge (Confirm, Password)
-│       └── environments/     # Environment-Konfiguration
-└── README.md
-```
-
-## API-Endpunkte
-
-| Methode | URL | Beschreibung |
-|---------|-----|--------------|
-| POST | `/api/login/` | Login (Token erhalten) |
-| GET | `/api/me/` | Aktueller Benutzer |
-| GET/POST | `/api/employees/` | Mitarbeiter auflisten/anlegen |
-| GET/PUT/DELETE | `/api/employees/:id/` | Mitarbeiter lesen/bearbeiten/löschen |
-| GET/POST | `/api/departments/` | Abteilungen auflisten/anlegen |
-| GET/PUT/DELETE | `/api/departments/:id/` | Abteilung lesen/bearbeiten/löschen |
-| GET/POST | `/api/positions/` | Positionen auflisten/anlegen |
-| GET/PUT/DELETE | `/api/positions/:id/` | Position lesen/bearbeiten/löschen |
-| POST | `/api/change-password/` | Passwort ändern |
