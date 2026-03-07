@@ -97,3 +97,20 @@ class Absence(models.Model):
 
     def __str__(self) -> str:
         return f"{self.employee} – {self.get_absence_type_display()} ({self.start_date} bis {self.end_date})"
+
+class TimeEntry(models.Model):
+    employee = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, related_name="time_entries"
+    )
+    date = models.DateField(auto_now_add=True)
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        ordering = ["-start_time"]
+        verbose_name = "Zeiteintrag"
+        verbose_name_plural = "Zeiteinträge"
+
+    def __str__(self) -> str:
+        status = "Geöffnet" if not self.end_time else "Geschlossen"
+        return f"{self.employee} ({self.date}) - {status}"

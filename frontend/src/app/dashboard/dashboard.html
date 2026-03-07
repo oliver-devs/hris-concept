@@ -43,16 +43,50 @@
         }
 
         @if (auth.canApprove()) {
-            <mat-card class="kpi-card red-card clickable" [routerLink]="['/calendar']" [queryParams]="{ view: 'approvals' }">   
+            <mat-card class="kpi-card red-card clickable" [routerLink]="['/calendar']" [queryParams]="{ view: 'approvals' }">
                 <div class="kpi-content">
-                    <div class="kpi-value">{{ pendingRequests().length }}</div>     
+                    <div class="kpi-value">{{ pendingRequests().length }}</div>      
                     <div class="kpi-label">Offene Anträge</div>
                 </div>
                 <mat-icon class="kpi-icon">pending_actions</mat-icon>
             </mat-card>
         }
-    </div>
-    <div class="content-grid">
+        </div>
+
+        <!-- ZEITERFASSUNG WIDGET -->
+        <mat-card class="time-tracking-widget" [class.is-active]="activeTimeEntry()">
+        <mat-card-content class="time-content">
+            <div class="time-info">
+                @if (activeTimeEntry()) {
+                    <div class="status-indicator active"></div>
+                    <div class="time-text">
+                        <h3>Dienst läuft</h3>
+                        <div class="timer">{{ workedTodayStr() }}</div>
+                    </div>
+                } @else {
+                    <div class="status-indicator inactive"></div>
+                    <div class="time-text">
+                        <h3>Ausgestempelt</h3>
+                        <p>Bereit für den Arbeitstag?</p>
+                    </div>
+                }
+            </div>
+
+            <div class="time-actions">
+                @if (activeTimeEntry()) {
+                    <button mat-flat-button color="warn" class="punch-btn punch-out" (click)="punchOut()">
+                        <mat-icon>stop_circle</mat-icon> Ausstempeln
+                    </button>
+                } @else {
+                    <button mat-flat-button color="primary" class="punch-btn punch-in" (click)="punchIn()">
+                        <mat-icon>play_circle</mat-icon> Einstempeln
+                    </button>
+                }
+            </div>
+        </mat-card-content>
+        </mat-card>
+
+        <div class="content-grid">
         <!-- Alle: Kollegen in der Abteilung -->
         <mat-card class="section-card">
             <mat-card-header>

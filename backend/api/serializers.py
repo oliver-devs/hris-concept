@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Absence, Department, Employee, Position
+from .models import Absence, Department, Employee, Position, TimeEntry
 
 
 class PositionSerializer(serializers.ModelSerializer):
@@ -61,10 +61,24 @@ class AbsenceSerializer(serializers.ModelSerializer):
     def get_approval_count(self, obj: Absence) -> int:
         return obj.approved_by.count()
 
+class TimeEntrySerializer(serializers.ModelSerializer):
+    employee_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = TimeEntry
+        fields = [
+            "id", "employee", "employee_name", 
+            "date", "start_time", "end_time",
+        ]
+        read_only_fields = ["date", "start_time"]
+
+    def get_employee_name(self, obj: TimeEntry) -> str:
+        return str(obj.employee)
+
     def validate(self, data: dict) -> dict:
-        if data.get("end_date") and data.get("start_date"):
-            if data["end_date"] < data["start_date"]:
+        if data.get("end_time") and data.get("start_time"):
+            if data["end_time"] < data["start_time"]:
                 raise serializers.ValidationError(
-                    {"end_date": "Das Enddatum darf nicht vor dem Startdatum liegen."}
+                    {"end_time": "Das Enddatum darf nicht vor dem Startdatum liegen."}
                 )
         return data

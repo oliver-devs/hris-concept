@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, OnInit } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, OnDestroy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmployeeService } from '../shared/employee.service';
 import { DepartmentService } from '../shared/department.service';
 import { AbsenceService } from '../shared/absence.service';
+import { TimeService, TimeEntry } from '../shared/time.service';
 import { Employee, Department, Absence } from '../shared/models';
 import { AuthService } from '../auth/auth.service';
 
@@ -17,10 +18,11 @@ import { AuthService } from '../auth/auth.service';
     templateUrl: './dashboard.html',
     styleUrl: './dashboard.css',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
     private readonly employeeService = inject(EmployeeService);
     private readonly departmentService = inject(DepartmentService);
     private readonly absenceService = inject(AbsenceService);
+    private readonly timeService = inject(TimeService);
     readonly auth = inject(AuthService);
     private readonly snackBar = inject(MatSnackBar);
 
@@ -28,6 +30,13 @@ export class DashboardComponent implements OnInit {
     readonly allEmployees = signal<Employee[]>([]);
     readonly departments = signal<Department[]>([]);
     readonly absences = signal<Absence[]>([]);
+    readonly timeEntries = signal<TimeEntry[]>([]);
+
+    private timerInterval: any;
+    readonly currentTime = signal<Date>(new Date());
+    readonly activeTimeEntry = computed(() => {
+        return this.timeEntries().find(entry => !entry.end_time);
+    });
 
     readonly formattedName = computed(() => {
         const user = this.auth.currentUser();
@@ -102,8 +111,34 @@ export class DashboardComponent implements OnInit {
         [...this.allEmployees()].reverse().slice(0, 5),
     );
 
+    readonly workedTodayStr = computed(() => {
+        const entry = this.activeTimeEntry();
+        if (!entry) return '00:00:00';
+
+        const start = new Date(entry.start_time).getTime();
+        const now = this.currentTime().getTime();
+        const diffMs = now - start;
+        
+        if (diffMs < 0) return '00:00:00';
+
+        const hours = Math.floor(diffMs / (1000 * 60 * 60));
+        const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    });
+
     ngOnInit() {
         this.loadData();
+        this.timerInterval = setInterval(() => {
+            this.currentTime.set(new Date());
+        }, 1000);
+    }
+
+    ngOnDestroy() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+        }
     }
 
     private loadData() {
@@ -126,6 +161,42 @@ export class DashboardComponent implements OnInit {
             next: (data) => this.absences.set(data),
             error: () =>
                 this.snackBar.open('Fehler beim Laden der Abwesenheiten.', 'OK', { duration: 4000 }),
+        });
+
+        this.loadTimeEntries();
+    }
+
+    private loadTimeEntries() {
+        const empId = this.auth.currentUser()?.employee_id;
+        if (empId) {
+            this.timeService.getEntriesForEmployee(empId).subscribe({
+                next: (data) => this.timeEntries.set(data),
+                error: () => console.error('Fehler beim Laden der Zeiteinträge'),
+            });
+        }
+    }
+
+    punchIn() {
+        this.timeService.punchIn().subscribe({
+            next: () => {
+                this.loadTimeEntries();
+                this.snackBar.open('Erfolgreich eingestempelt. Guten Start!', 'OK', { duration: 3000 });
+            },
+            error: (err) => {
+                this.snackBar.open(err.error?.detail?.[0] || 'Fehler beim Einstempeln', 'OK', { duration: 4000 });
+            }
+        });
+    }
+
+    punchOut() {
+        this.timeService.punchOut().subscribe({
+            next: () => {
+                this.loadTimeEntries();
+                this.snackBar.open('Erfolgreich ausgestempelt. Schönen Feierabend!', 'OK', { duration: 3000 });
+            },
+            error: (err) => {
+                this.snackBar.open(err.error?.detail?.[0] || 'Fehler beim Ausstempeln', 'OK', { duration: 4000 });
+            }
         });
     }
 }

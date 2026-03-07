@@ -9,6 +9,7 @@ from .views import (
     DepartmentViewSet,
     EmployeeViewSet,
     PositionViewSet,
+    TimeEntryViewSet,
 )
 
 router = DefaultRouter()
@@ -16,6 +17,7 @@ router.register(r"employees", EmployeeViewSet)
 router.register(r"departments", DepartmentViewSet)
 router.register(r"positions", PositionViewSet, basename="position")
 router.register(r"absences", AbsenceViewSet)
+router.register(r"time-entries", TimeEntryViewSet, basename="timeentry")
 
 urlpatterns = [
     path("login/", obtain_auth_token, name="login"),

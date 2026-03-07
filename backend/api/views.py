@@ -10,14 +10,16 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.utils import timezone
 
-from .models import Absence, Department, Employee, Position
+from .models import Absence, Department, Employee, Position, TimeEntry
 from .permissions import IsManagementOrReadOnly, IsOwnerOrStaff
 from .serializers import (
     AbsenceSerializer,
     DepartmentSerializer,
     EmployeeSerializer,
     PositionSerializer,
+    TimeEntrySerializer,
 )
 from .services import get_employee_for_user, user_can_approve, user_is_management
 
@@ -211,3 +213,55 @@ class ChangePasswordView(APIView):
         user.save()
 
         return Response({"detail": "Passwort erfolgreich geändert."})
+
+class TimeEntryViewSet(viewsets.ModelViewSet):
+    serializer_class = TimeEntrySerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        qs = TimeEntry.objects.all()
+        
+        # Normale User sehen nur ihre eigenen Zeiten
+        if not user_is_management(self.request.user):
+            employee = get_employee_for_user(self.request.user)
+            if employee:
+                qs = qs.filter(employee=employee)
+            else:
+                qs = qs.none()
+                
+        employee_id = self.request.query_params.get("employee")
+        if employee_id:
+            qs = qs.filter(employee_id=employee_id)
+            
+        date = self.request.query_params.get("date")
+        if date:
+            qs = qs.filter(date=date)
+            
+        return qs
+
+    def perform_create(self, serializer):
+        employee = get_employee_for_user(self.request.user)
+        if not employee:
+            raise PermissionDenied("Kein Mitarbeiterprofil gefunden.")
+            
+        # Überprüfen ob es schon einen offenen Eintrag gibt
+        open_entry = TimeEntry.objects.filter(employee=employee, end_time__isnull=True).first()
+        if open_entry:
+            raise ValidationError("Es gibt bereits einen offenen Zeiteintrag. Bitte stempel dich erst aus.")
+            
+        serializer.save(employee=employee)
+
+    @action(detail=False, methods=["post"])
+    def punch_out(self, request: Request) -> Response:
+        employee = get_employee_for_user(request.user)
+        if not employee:
+            raise PermissionDenied("Kein Mitarbeiterprofil gefunden.")
+            
+        open_entry = TimeEntry.objects.filter(employee=employee, end_time__isnull=True).first()
+        if not open_entry:
+            raise ValidationError("Es gibt keinen offenen Zeiteintrag zum Ausstempeln.")
+            
+        open_entry.end_time = timezone.now()
+        open_entry.save()
+        
+        return Response(self.get_serializer(open_entry).data)
