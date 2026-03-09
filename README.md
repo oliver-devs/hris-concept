@@ -1,39 +1,38 @@
-# HRIS Concept – HR & Zeiterfassung (UI/UX Concept Study)
+# Spectrum by PrismaLab – All-in-One Unternehmenssoftware (UI/UX Concept Study)
 
-**HRIS Concept** (fiktiv entwickelt für die "Nexus Dynamics GmbH") ist eine webbasierte Unternehmens-Software zur Verwaltung von Mitarbeitern, Abwesenheiten und Arbeitszeiten. Der App-Name ist über die Einstellungen frei konfigurierbar (White-Labeling).
+**Spectrum** ist eine All-in-One Unternehmenssoftware, entwickelt von der fiktiven **PrismaLab GmbH**.
+
+> **"Komplexes einfach machen."**
+>
+> PrismaLab ist ein Softwareunternehmen, das Komplexes einfach macht. Durch UX Research, Design und Engineering entwickelt PrismaLab eine All-in-One Unternehmenssoftware — und nutzt sie selbst im Alltag. Das Produkt ist der lebende Beweis, dass ihr Ansatz funktioniert: intuitiv, übersichtlich und reduziert auf das Wesentliche.
 
 > **Kernfokus dieses Projekts:**
-> Dieses Projekt dient in erster Linie als **UI/UX-Showcase und Konzeptstudie**. Der Schwerpunkt liegt nicht primär auf komplexer Backend-Logik, sondern auf der Frage: *"Wie muss eine moderne, intuitive und enterprise-taugliche Software für Endanwender gestaltet sein?"*
+> Dieses Projekt dient als **UI/UX-Showcase und Konzeptstudie**. Der Schwerpunkt liegt auf der Frage: *"Wie muss eine moderne, intuitive und enterprise-taugliche Software für Endanwender gestaltet sein?"* — Komplexität unter der Haube, Einfachheit an der Oberfläche.
 
-## Design-Philosophie & UX-Entscheidungen
+## Design-Philosophie
 
-Die gesamte Benutzeroberfläche wurde mit Fokus auf Ergonomie und einem klaren, modernen "Look & Feel" entwickelt.
+*   **"Weniger ist mehr":** Intuitiv, übersichtlich, reduziert auf das Wesentliche. Software, die ohne Handbuch funktioniert.
+*   **Soft UI & Flat Design:** Keine harten Schlagschatten. Feine Rahmen, softe Hintergrund-Abstufungen und pastellige Status-Farben.
+*   **Grid-Layouts & Info-Karten:** Komplexe Ansichten nutzen geteilte Raster mit erklärenden Info-Karten — ein SaaS-Pattern zur Reduzierung von Support-Anfragen.
+*   **Intuitive Navigation (Drill-Down):** Statt verschachtelter Menüs wird in Listen hinein-navigiert (z.B. Abteilungen → Positionen).
+*   **Kontext-Wechsel via Toggle:** Moderne Button-Toggles statt klassischer Tabs für fließende View-Wechsel.
+*   **White-Labeling:** Firmenname und Software-Name sind dynamisch anpassbar und ändern das komplette Branding in Echtzeit.
+*   **Per-User Theming:** 10 Farbthemen (5 maskulin, 5 feminin) mit gedämpften Custom-Paletten. Hell-/Dunkel-/System-Modus. Gender-basierte Farbstandards beim ersten Login.
+*   **Accessibility:** Semantisches HTML, Keyboard-Navigation und ARIA-Labels.
 
-*   **Soft UI & Flat Design:** Verzicht auf harte Schlagschatten. Stattdessen feine Rahmen, softe Hintergrund-Abstufungen und pastellige Status-Farben ("Pills").
-*   **Grid-Layouts & Info-Karten:** Komplexe Ansichten (wie Einstellungen oder Kalender) nutzen ein geteiltes Raster. Neben Formularen oder Listen stehen "Info-Karten", die dem Nutzer direkt erklären, was passiert – ein bewährtes SaaS-Pattern zur Reduzierung von Support-Anfragen.
-*   **Intuitive Navigation (Drill-Down):** Statt tiefer, verschachtelter Menüs wird in Listen hinein-navigiert (z.B. Abteilungen → Positionen).
-*   **Kontext-Wechsel via Toggle:** Moderne Button-Toggles statt klassischer Tabs, um z.B. zwischen "Team-Kalender" und "Meine Anträge" fließend zu wechseln.
-*   **White-Labeling Ready:** Unternehmensname und App-Name sind dynamisch in den Einstellungen anpassbar und ändern das komplette Branding der Software in Echtzeit (inkl. Login-Screen).
-*   **Alphabetische Filterung:** Lange Listen werden mit einer Adressbuch-ähnlichen ABC-Filterleiste für schnelles Auffinden versehen.
-*   **Per-User Theming:** Jeder Nutzer kann individuell zwischen Hell-/Dunkel-Modus und 10 Farbthemen wählen. Die Auswahl wird pro Benutzer gespeichert. Der Login-Bereich zeigt immer den Firmenstandard (Azure).
-*   **Gender-basierte Farbstandards:** Beim ersten Login wird automatisch ein zum Geschlecht passendes Farbschema vorgeschlagen (Azure, Rosé oder Lavendel). Alle 10 Themes stehen aber frei zur Auswahl.
-*   **Accessibility:** Semantisches HTML, Keyboard-Navigation und ARIA-Labels für barrierefreie Bedienung.
+## Module (aktueller Stand)
 
-## Features
+- **Dashboard:** Rollenbasierte Startseite mit KPI-Metriken und Zeiterfassungs-Widget.
+- **Zeiterfassung:** Einstempeln/Ausstempeln, Pausenverwaltung, Wochenübersicht, Korrekturanträge.
+- **Mitarbeiter-Verzeichnis:** Alphabetisch gruppiert, durchsuchbar, für alle Benutzer sichtbar.
+- **Abwesenheiten:** Team-Kalender, persönliche Anträge, Genehmigungs-Workflow mit Dual-Approval.
+- **Stammdaten:** Abteilungen und Positionen mit Drill-Down und Statistik-Dialog.
+- **Profil & Einstellungen:** Profilkarte, Theming, Passwort-Verwaltung.
+- **Unternehmensverwaltung** (Management): Globale Einstellungen, Branding.
 
-- **Interaktives Dashboard:** Rollenbasierte Startseite (Mitarbeiter vs. Management) mit anklickbaren KPI-Metriken und integriertem Zeiterfassungs-Widget.
-- **Zeiterfassung:** Einstempeln/Ausstempeln mit Pausenverwaltung, Wochenübersicht und Korrekturaanträgen.
-- **Mitarbeiter-Verzeichnis:** Alphabetisch gruppierte, durchsuchbare Listenansicht – für alle Benutzer sichtbar als Unternehmensverzeichnis.
-- **Abwesenheiten (Urlaub, Krank, Homeoffice, Sonderurlaub):**
-  - Monats-Kalender für das Team mit Tagesdetail-Dialog.
-  - "Meine Anträge"-Ansicht für den Mitarbeiter.
-  - "Freigaben"-Workflow für Vorgesetzte (Genehmigen / Ablehnen) mit Dual-Approval-Option.
-- **Stammdaten-Verwaltung:** Abteilungen und dazugehörige Positionen mit Statistik-Dialog.
-- **Profil & Einstellungen:**
-  - Persönliche Profilkarte (read-only) mit Hinweis zur Änderung über die Personalabteilung.
-  - Dynamisches Theming: Hell/Dunkel/System-Modus und 10 Farbthemen (5 maskulin, 5 feminin) mit gedämpften Custom-Paletten.
-  - Passwort-Verwaltung.
-- **Unternehmensverwaltung** (nur Management): Globale Einstellungen wie Firmenname, Software-Name, Urlaubstage und Wochenarbeitszeit.
+## Geplante Module
+
+Meetings, Projekte (Kanban/Gantt), Dokumente, Finanzen, Tickets/Helpdesk, Kommunikation, Schulungen, Inventar, Global Search, Notifications.
 
 ---
 
