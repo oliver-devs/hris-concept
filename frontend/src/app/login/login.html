@@ -57,9 +57,15 @@
         
         <mat-card class="info-card login-info">
             <mat-card-content class="info-content">
-                <mat-icon class="info-icon">schedule</mat-icon>
-                <h3>Willkommen zurück!</h3>
-                <p>Bitte logge dich mit deinen Zugangsdaten ein, um deinen Arbeitstag zu beginnen und deine Zeiten zu erfassen.</p>
+                <div class="info-top">
+                    <mat-icon class="info-icon">schedule</mat-icon>
+                    <h3>Willkommen zurück!</h3>
+                    <p>Bitte logge dich mit deinen Zugangsdaten ein, um deinen Arbeitstag zu beginnen.</p>
+                </div>
+                <div class="info-clock">
+                    <span class="clock-time">{{ currentTime() }}</span>
+                    <span class="clock-date">{{ currentDate() }}</span>
+                </div>
             </mat-card-content>
         </mat-card>
     </div>

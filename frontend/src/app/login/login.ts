@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,16 +23,31 @@ import { CompanyService } from '../shared/company.service';
     templateUrl: './login.html',
     styleUrl: './login.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
     private readonly auth = inject(AuthService);
     private readonly router = inject(Router);
     private readonly snackBar = inject(MatSnackBar);
+    private readonly destroyRef = inject(DestroyRef);
     readonly companyService = inject(CompanyService);
 
     username = '';
     password = '';
     readonly isLoading = signal(false);
     readonly currentYear = new Date().getFullYear();
+    readonly currentTime = signal('');
+    readonly currentDate = signal('');
+
+    ngOnInit() {
+        this.updateClock();
+        const interval = setInterval(() => this.updateClock(), 1000);
+        this.destroyRef.onDestroy(() => clearInterval(interval));
+    }
+
+    private updateClock() {
+        const now = new Date();
+        this.currentTime.set(now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+        this.currentDate.set(now.toLocaleDateString('de-DE', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }));
+    }
 
     onLogin() {
         if (this.isLoading()) return;
