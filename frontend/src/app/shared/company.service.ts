@@ -15,8 +15,8 @@ export class CompanyService {
     private readonly STORAGE_KEY = 'hrsys_company_data';
 
     readonly companyData = signal<CompanyData>({
-        name: 'Nexus Dynamics',
-        softwareName: 'ClockIn',
+        name: 'PrismaLab',
+        softwareName: 'Spectrum',
         logoUrl: '/company-logo.svg',
         vacationDays: 30,
         workingHours: 40,

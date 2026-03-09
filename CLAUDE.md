@@ -1,9 +1,9 @@
-# CLAUDE.md – HRIS Concept Project
+# CLAUDE.md – Spectrum by PrismaLab
 
 ## Projekt-Überblick
 
-UI/UX Concept Study für ein HRIS (HR Information System) namens "ClockIn".
-Fiktiv entwickelt für die "Nexus Dynamics GmbH".
+UI/UX Concept Study für "Spectrum" — eine All-in-One Unternehmenssoftware.
+Entwickelt von der fiktiven "PrismaLab GmbH". Leitspruch: "Komplexes einfach machen."
 
 ## Tech-Stack
 
