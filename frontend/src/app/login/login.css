@@ -1,6 +1,5 @@
 .login-container {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100dvh;
@@ -10,17 +9,6 @@
         var(--mat-sys-secondary-container) 100%);
     transition: background 0.3s ease;
     padding: 20px;
-}
-
-/* Branding — zentriert über der Login-Card */
-.login-branding {
-    width: 380px;
-    margin-block-end: 32px;
-
-    @media (max-width: 800px) {
-        width: 100%;
-        max-width: 400px;
-    }
 }
 
 .company-info {
@@ -82,12 +70,12 @@
     text-transform: uppercase;
 }
 
-/* Grid — Login-Card links, Info rechts */
+/* Grid — 2x2: Branding oben links, Login unten links, Info+Footer rechts */
 .login-grid {
     display: grid;
-    grid-template-columns: minmax(0, 380px) minmax(0, 320px);
-    gap: 24px;
-    align-items: stretch;
+    grid-template-columns: 380px 320px;
+    grid-template-rows: auto 1fr auto;
+    gap: 0 24px;
 
     @media (max-width: 800px) {
         grid-template-columns: 1fr;
@@ -96,7 +84,27 @@
     }
 }
 
-/* Login Card */
+.login-branding {
+    grid-column: 1;
+    grid-row: 1;
+    margin-block-end: 32px;
+}
+
+.login-card {
+    grid-column: 1;
+    grid-row: 2 / 4;
+}
+
+.info-column {
+    grid-column: 2;
+    grid-row: 2 / 4;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: start;
+}
+
+/* Login Card — Styles (Position ist im Grid oben definiert) */
 .login-card {
     padding: 32px 24px 24px;
     border-radius: 24px !important;
@@ -105,6 +113,7 @@
     background: color-mix(in srgb, var(--mat-sys-surface) 75%, transparent) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    align-self: start;
 }
 
 .login-title {
@@ -135,12 +144,7 @@
     border-radius: 24px;
 }
 
-/* Info Column — Card + Footer */
-.info-column {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
+/* Info Column — Card + Footer (Position ist im Grid oben definiert) */
 
 .login-info {
     background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 65%, transparent) !important;
