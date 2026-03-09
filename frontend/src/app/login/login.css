@@ -12,33 +12,15 @@
     padding: 20px;
 }
 
-.login-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 380px) minmax(0, 320px);
-    grid-template-rows: auto 1fr;
-    gap: 24px;
+/* Branding — zentriert über der Login-Card */
+.login-branding {
+    width: 380px;
+    margin-block-end: 32px;
 
     @media (max-width: 800px) {
-        grid-template-columns: 1fr;
-        max-width: 400px;
         width: 100%;
+        max-width: 400px;
     }
-}
-
-.login-column {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    grid-row: 1 / -1;
-}
-
-.info-card {
-    grid-row: 2;
-}
-
-/* Branding */
-.login-branding {
-    text-align: center;
 }
 
 .company-info {
@@ -100,6 +82,20 @@
     text-transform: uppercase;
 }
 
+/* Grid — Login-Card links, Info rechts */
+.login-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 380px) minmax(0, 320px);
+    gap: 24px;
+    align-items: stretch;
+
+    @media (max-width: 800px) {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        width: 100%;
+    }
+}
+
 /* Login Card */
 .login-card {
     padding: 32px 24px 24px;
@@ -139,7 +135,13 @@
     border-radius: 24px;
 }
 
-/* Info Card */
+/* Info Column — Card + Footer */
+.info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .login-info {
     background: color-mix(in srgb, var(--mat-sys-surface-container-lowest) 65%, transparent) !important;
     border: 1px dashed color-mix(in srgb, var(--mat-sys-outline-variant) 50%, transparent) !important;
@@ -147,6 +149,7 @@
     border-radius: 24px !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    flex: 1;
 }
 
 .info-content {
@@ -210,9 +213,8 @@
     color: var(--mat-sys-on-surface-variant);
 }
 
-/* Footer */
+/* Footer — zentriert unter der Info-Card */
 .login-footer {
-    margin-block-start: 32px;
     font-size: 12px;
     font-weight: 400;
     color: var(--mat-sys-on-surface-variant);
